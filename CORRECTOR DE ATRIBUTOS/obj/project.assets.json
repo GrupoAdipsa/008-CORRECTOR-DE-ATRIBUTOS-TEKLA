@@ -936,11 +936,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Kevin Flores\\Documents\\003-COMPARAR-PIEZAS-TEKLA\\CORRECTOR DE ATRIBUTOS\\CORRECTOR DE ATRIBUTOS.csproj",
+      "projectUniqueName": "C:\\Users\\Kevin Flores\\Documents\\008-CORRECTOR-DE-ATRIBUTOS-TEKLA\\CORRECTOR DE ATRIBUTOS\\CORRECTOR DE ATRIBUTOS.csproj",
       "projectName": "CORRECTOR_DE_ATRIBUTOS",
-      "projectPath": "C:\\Users\\Kevin Flores\\Documents\\003-COMPARAR-PIEZAS-TEKLA\\CORRECTOR DE ATRIBUTOS\\CORRECTOR DE ATRIBUTOS.csproj",
+      "projectPath": "C:\\Users\\Kevin Flores\\Documents\\008-CORRECTOR-DE-ATRIBUTOS-TEKLA\\CORRECTOR DE ATRIBUTOS\\CORRECTOR DE ATRIBUTOS.csproj",
       "packagesPath": "C:\\Users\\Kevin Flores\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Kevin Flores\\Documents\\003-COMPARAR-PIEZAS-TEKLA\\CORRECTOR DE ATRIBUTOS\\obj\\",
+      "outputPath": "C:\\Users\\Kevin Flores\\Documents\\008-CORRECTOR-DE-ATRIBUTOS-TEKLA\\CORRECTOR DE ATRIBUTOS\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Kevin Flores\\AppData\\Roaming\\NuGet\\NuGet.Config",

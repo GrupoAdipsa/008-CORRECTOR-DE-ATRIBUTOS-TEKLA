@@ -449,5 +449,118 @@ namespace CORRECTOR_DE_ATRIBUTOS
         // NOTA: La sincronización de soldaduras se maneja con la macro de Tekla
         // (MacroPlantilla\SyncWeldPhaseFromParts.cs)
         // Esta aplicación C# solo sincroniza Parts y Bolts
+        
+        /// <summary>
+        /// Ejecuta la sincronización de TODO el modelo en lotes para mejor rendimiento y estabilidad.
+        /// Procesa los assemblies en grupos para evitar problemas de memoria.
+        /// </summary>
+        /// <param name="progressCallback">Callback para reportar progreso al usuario</param>
+        /// <returns>True si la sincronización fue exitosa</returns>
+        public bool ExecuteAllModelInBatches(Action<string> progressCallback = null)
+        {
+            if (!_model.GetConnectionStatus())
+            {
+                _report.AddError("No hay conexión con Tekla Structures.");
+                return false;
+            }
+
+            try
+            {
+                // Paso 1: Obtener TODOS los assemblies del modelo
+                progressCallback?.Invoke("Obteniendo lista de assemblies del modelo...");
+                
+                ModelObjectEnumerator allAssemblies = _model.GetModelObjectSelector().GetAllObjectsWithType(
+                    ModelObject.ModelObjectEnum.ASSEMBLY
+                );
+                
+                if (allAssemblies == null || allAssemblies.GetSize() == 0)
+                {
+                    _report.AddWarning("No se encontraron assemblies en el modelo.");
+                    return false;
+                }
+                
+                // Paso 2: Convertir a lista para procesar en lotes
+                List<Assembly> assemblyList = new List<Assembly>();
+                while (allAssemblies.MoveNext())
+                {
+                    Assembly assembly = allAssemblies.Current as Assembly;
+                    if (assembly != null)
+                    {
+                        assemblyList.Add(assembly);
+                    }
+                }
+                
+                progressCallback?.Invoke($"Total de assemblies encontrados: {assemblyList.Count}");
+                progressCallback?.Invoke("");
+                
+                // Paso 3: Configurar tamaño de lote
+                // IMPORTANTE: Procesar en lotes pequeños para mantener estabilidad
+                // Tamaño de lote óptimo: 50-100 assemblies por lote
+                const int BATCH_SIZE = 75;
+                int totalBatches = (int)Math.Ceiling((double)assemblyList.Count / BATCH_SIZE);
+                
+                progressCallback?.Invoke($"Procesamiento en {totalBatches} lotes de hasta {BATCH_SIZE} assemblies cada uno");
+                progressCallback?.Invoke("Esto mantiene el rendimiento y estabilidad del sistema");
+                progressCallback?.Invoke("");
+                
+                // Paso 4: Procesar cada lote
+                for (int batchIndex = 0; batchIndex < totalBatches; batchIndex++)
+                {
+                    int startIndex = batchIndex * BATCH_SIZE;
+                    int endIndex = Math.Min(startIndex + BATCH_SIZE, assemblyList.Count);
+                    int currentBatchSize = endIndex - startIndex;
+                    
+                    progressCallback?.Invoke($"----------------------------------------");
+                    progressCallback?.Invoke($"LOTE {batchIndex + 1} de {totalBatches}");
+                    progressCallback?.Invoke($"Procesando assemblies {startIndex + 1} a {endIndex} ({currentBatchSize} assemblies)");
+                    progressCallback?.Invoke($"----------------------------------------");
+                    
+                    // Procesar assemblies del lote actual
+                    for (int i = startIndex; i < endIndex; i++)
+                    {
+                        Assembly assembly = assemblyList[i];
+                        
+                        try
+                        {
+                            SynchronizeAssembly(assembly);
+                            
+                            // Reportar progreso cada 10 assemblies
+                            if ((i - startIndex + 1) % 10 == 0 || i == endIndex - 1)
+                            {
+                                int processedInBatch = i - startIndex + 1;
+                                int percentInBatch = (int)((double)processedInBatch / currentBatchSize * 100);
+                                progressCallback?.Invoke($"  Progreso del lote: {processedInBatch}/{currentBatchSize} ({percentInBatch}%)");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _report.AddError($"Error procesando assembly {assembly.Identifier.ID}: {ex.Message}");
+                        }
+                    }
+                    
+                    // Paso 5: Commit después de cada lote (CRÍTICO para performance)
+                    progressCallback?.Invoke($"Guardando cambios del lote {batchIndex + 1}...");
+                    _model.CommitChanges();
+                    progressCallback?.Invoke($"Lote {batchIndex + 1} completado exitosamente");
+                    progressCallback?.Invoke("");
+                    
+                    // Pequeña pausa para no sobrecargar Tekla
+                    System.Threading.Thread.Sleep(100);
+                }
+                
+                progressCallback?.Invoke("========================================");
+                progressCallback?.Invoke("SINCRONIZACIÓN COMPLETA FINALIZADA");
+                progressCallback?.Invoke("========================================");
+                progressCallback?.Invoke("");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _report.AddError($"Error en ExecuteAllModelInBatches: {ex.Message}");
+                progressCallback?.Invoke($"ERROR CRÍTICO: {ex.Message}");
+                return false;
+            }
+        }
     }
 }

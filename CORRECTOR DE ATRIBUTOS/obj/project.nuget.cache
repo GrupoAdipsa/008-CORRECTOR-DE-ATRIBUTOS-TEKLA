@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vTJc5ZK3U9w=",
+  "dgSpecHash": "b7kyv3MPBqU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Kevin Flores\\Documents\\003-COMPARAR-PIEZAS-TEKLA\\CORRECTOR DE ATRIBUTOS\\CORRECTOR DE ATRIBUTOS.csproj",
+  "projectFilePath": "C:\\Users\\Kevin Flores\\Documents\\008-CORRECTOR-DE-ATRIBUTOS-TEKLA\\CORRECTOR DE ATRIBUTOS\\CORRECTOR DE ATRIBUTOS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Kevin Flores\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\Kevin Flores\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
