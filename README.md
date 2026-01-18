@@ -193,10 +193,10 @@ Estos archivos son parte de la plantilla original del plugin de Tekla, pero **NO
 #### Macros de Tekla (Separadas)
 
 - **MacroPlantilla/SyncWeldPhaseFromParts_OLD.cs**
-  - Plantilla de macro para sincronizar soldaduras
-  - Se instala en: `C:\ProgramData\Trimble\Tekla Structures\2021.0\Environments\common\macros\`
-  - **NO se compila con el proyecto C#** (se compila automaticamente por Tekla)
-  - Funciona de manera completamente independiente
+- Plantilla de macro para sincronizar soldaduras
+- Se instala en: `C:\ProgramData\Trimble\Tekla Structures\2021.0\Environments\common\macros\modeling\`
+- **NO se compila con el proyecto C#** (se compila automaticamente por Tekla)
+- Funciona de manera completamente independiente
 
 ---
 
@@ -229,7 +229,7 @@ instalar_macro.bat
 
 Este script copia la macro a la ubicacion correcta de Tekla:
 ```
-C:\ProgramData\Trimble\Tekla Structures\2021.0\Environments\common\macros\
+C:\ProgramData\Trimble\Tekla Structures\2021.0\Environments\common\macros\modeling\
 ```
 
 ### Paso 4: Verificar Instalacion
@@ -775,7 +775,7 @@ El proyecto incluye mas de 40 documentos tecnicos en la carpeta `CORRECTOR DE AT
 1. Cierra completamente Tekla Structures
 2. Verifica que la macro existe en:
    ```
-   C:\ProgramData\Trimble\Tekla Structures\2021.0\Environments\common\macros\SyncWeldPhaseFromParts.cs
+   C:\ProgramData\Trimble\Tekla Structures\2021.0\Environments\common\macros\modeling\SyncWeldPhaseFromParts.cs
    ```
 3. Abre Tekla nuevamente
 4. Ve a `Tools > Macros...`

@@ -24,7 +24,7 @@ namespace UserMacros
             
             if (!model.GetConnectionStatus())
             {
-                System.Windows.Forms.MessageBox.Show("No hay conexión con Tekla Structures.",
+                System.Windows.Forms.MessageBox.Show("No hay conexion con Tekla Structures.",
                     "Error", System.Windows.Forms.MessageBoxButtons.OK,
                     System.Windows.Forms.MessageBoxIcon.Error);
                 return;
@@ -32,10 +32,10 @@ namespace UserMacros
 
             try
             {
-                // Preguntar al usuario qué desea procesar
+                // Preguntar al usuario que desea procesar
                 var choice = System.Windows.Forms.MessageBox.Show(
-                    "¿Qué deseas procesar?\n\n" +
-                    "SÍ = Solo soldaduras SELECCIONADAS\n" +
+                    "Que deseas procesar?\n\n" +
+                    "SI = Solo soldaduras SELECCIONADAS\n" +
                     "NO = TODAS las soldaduras del modelo\n\n" +
                     "Cancelar = Salir",
                     "Sincronizar Phase de Soldaduras",
@@ -54,7 +54,7 @@ namespace UserMacros
                 
                 if (processOnlySelected)
                 {
-                    ModelObjectSelector selector = new ModelObjectSelector();
+                    Tekla.Structures.Model.UI.ModelObjectSelector selector = new Tekla.Structures.Model.UI.ModelObjectSelector();
                     welds = selector.GetSelectedObjects();
                     
                     if (welds == null || welds.GetSize() == 0)
@@ -70,23 +70,26 @@ namespace UserMacros
                 }
                 else
                 {
-                    // Obtener todas las soldaduras del modelo
                     welds = model.GetModelObjectSelector().GetAllObjectsWithType(ModelObject.ModelObjectEnum.WELD);
                 }
 
-                // Procesar soldaduras
+                // Contadores
                 int weldsProcessed = 0;
                 int weldsChanged = 0;
                 int weldsSkipped = 0;
                 int weldsNoPhase = 0;
                 System.Text.StringBuilder log = new System.Text.StringBuilder();
 
+                // Diccionario: Phase objetivo -> Lista de soldaduras
+                System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<BaseWeld>> weldsByPhase = 
+                    new System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<BaseWeld>>();
+
+                // PASO 1: Identificar Phase objetivo de cada soldadura y agrupar
                 while (welds.MoveNext())
                 {
                     BaseWeld weld = welds.Current as BaseWeld;
                     if (weld == null) continue;
                     
-                    // Si estamos procesando seleccionadas, verificar que sea una soldadura
                     if (processOnlySelected)
                     {
                         ModelObject obj = welds.Current as ModelObject;
@@ -104,30 +107,38 @@ namespace UserMacros
                         if (mainPart == null && secondaryPart == null)
                         {
                             weldsSkipped++;
-                            log.AppendLine($"Weld {weld.Identifier.ID}: No se pudieron obtener las piezas conectadas");
+                            log.AppendLine(string.Format("Weld {0}: No se encontraron piezas conectadas", weld.Identifier.ID));
                             continue;
                         }
 
-                        // Determinar el Phase (prioridad: MainPart, luego SecondaryPart)
+                        // Determinar Phase objetivo (prioridad: MainPart, luego SecondaryPart)
                         int targetPhase = 0;
                         string partSource = "";
                         
                         if (mainPart != null)
                         {
-                            mainPart.GetReportProperty("PHASE", ref targetPhase);
-                            partSource = $"MainPart {mainPart.Identifier.ID}";
+                            int phase = 0;
+                            if (mainPart.GetReportProperty("PHASE", ref phase) && phase > 0)
+                            {
+                                targetPhase = phase;
+                                partSource = string.Format("MainPart {0}", mainPart.Identifier.ID);
+                            }
                         }
                         
                         if (targetPhase == 0 && secondaryPart != null)
                         {
-                            secondaryPart.GetReportProperty("PHASE", ref targetPhase);
-                            partSource = $"SecondaryPart {secondaryPart.Identifier.ID}";
+                            int phase = 0;
+                            if (secondaryPart.GetReportProperty("PHASE", ref phase) && phase > 0)
+                            {
+                                targetPhase = phase;
+                                partSource = string.Format("SecondaryPart {0}", secondaryPart.Identifier.ID);
+                            }
                         }
 
                         if (targetPhase == 0)
                         {
                             weldsNoPhase++;
-                            log.AppendLine($"Weld {weld.Identifier.ID}: Las piezas conectadas no tienen Phase asignada");
+                            log.AppendLine(string.Format("Weld {0}: Piezas conectadas sin Phase asignada", weld.Identifier.ID));
                             continue;
                         }
 
@@ -136,75 +147,258 @@ namespace UserMacros
                         weld.GetReportProperty("PHASE", ref currentPhase);
 
                         // Si ya tiene el Phase correcto, omitir
-                        if (currentPhase == targetPhase)
+                        if (currentPhase == targetPhase && currentPhase > 0)
                         {
                             weldsSkipped++;
+                            log.AppendLine(string.Format("Weld {0}: Ya tiene Phase {1} (omitida)", weld.Identifier.ID, currentPhase));
                             continue;
                         }
 
-                        // Asignar nuevo Phase
-                        weld.SetUserProperty("PHASE", targetPhase);
+                        // Agrupar por Phase objetivo
+                        if (!weldsByPhase.ContainsKey(targetPhase))
+                        {
+                            weldsByPhase[targetPhase] = new System.Collections.Generic.List<BaseWeld>();
+                        }
+                        weldsByPhase[targetPhase].Add(weld);
                         
-                        bool modified = weld.Modify();
-
-                        if (modified)
-                        {
-                            weldsChanged++;
-                            log.AppendLine($"? Weld {weld.Identifier.ID}: Phase {currentPhase} ? {targetPhase} (de {partSource})");
-                        }
-                        else
-                        {
-                            weldsSkipped++;
-                            log.AppendLine($"? Weld {weld.Identifier.ID}: Modify() devolvió false");
-                        }
+                        log.AppendLine(string.Format("Weld {0}: Reportado={1}, Target={2} (de {3})", 
+                            weld.Identifier.ID, currentPhase, targetPhase, partSource));
                     }
                     catch (Exception ex)
                     {
                         weldsSkipped++;
-                        log.AppendLine($"? Weld {weld.Identifier.ID}: Error - {ex.Message}");
+                        log.AppendLine(string.Format("ERROR Weld {0}: {1}", weld.Identifier.ID, ex.Message));
                     }
                 }
 
-                // Commit de cambios
-                if (weldsChanged > 0)
+                // PASO 2: Aplicar Phase usando Phase Manager por grupos
+                if (weldsByPhase.Count > 0)
                 {
+                    Tekla.Structures.Model.UI.ModelObjectSelector uiSelector = 
+                        new Tekla.Structures.Model.UI.ModelObjectSelector();
+                    
+                    foreach (var kvp in weldsByPhase)
+                    {
+                        int targetPhase = kvp.Key;
+                        System.Collections.Generic.List<BaseWeld> weldsToChange = kvp.Value;
+
+                        try
+                        {
+                            // Crear ArrayList con los objetos a seleccionar
+                            ArrayList objectsToSelect = new ArrayList();
+                            foreach (BaseWeld w in weldsToChange)
+                            {
+                                objectsToSelect.Add(w);
+                            }
+                            
+                            // Seleccionar los objetos
+                            uiSelector.Select(objectsToSelect);
+                            System.Threading.Thread.Sleep(200);
+
+                            // Abrir Phase Manager
+                            wpf.InvokeCommand("CommandRepository", "Tools.PhaseManager");
+                            System.Threading.Thread.Sleep(500);
+                            
+                            // IMPORTANTE: En Phase Manager, el indice de tabla = numero de Phase
+                            // Phase 0 = indice 0, Phase 1 = indice 1, Phase 2 = indice 2, etc.
+                            int tableIndex = targetPhase;
+                            log.AppendLine(string.Format("DEBUG: targetPhase={0}, tableIndex={1}", targetPhase, tableIndex));
+                            
+                            // Seleccionar Phase en la tabla
+                            akit.TableSelect("diaPhaseManager", "tablePhases", new int[] { tableIndex });
+                            System.Threading.Thread.Sleep(200);
+                            
+                            // Aplicar Phase a los objetos seleccionados
+                            akit.PushButton("butModifyObjects", "diaPhaseManager");
+                            System.Threading.Thread.Sleep(300);
+                            
+                            // Cerrar Phase Manager
+                            akit.PushButton("butOk", "diaPhaseManager");
+                            System.Threading.Thread.Sleep(300);
+
+                            // Deseleccionar
+                            uiSelector.Select(new ArrayList());
+
+                            // Verificacion post-cambio
+                            int successCount = 0;
+                            int failCount = 0;
+                            foreach (BaseWeld w in weldsToChange)
+                            {
+                                int verifyPhase = 0;
+                                if (w.GetReportProperty("PHASE", ref verifyPhase))
+                                {
+                                    if (verifyPhase == targetPhase)
+                                    {
+                                        successCount++;
+                                        log.AppendLine(string.Format("  OK: Weld {0} = Phase {1}", w.Identifier.ID, verifyPhase));
+                                    }
+                                    else
+                                    {
+                                        failCount++;
+                                        log.AppendLine(string.Format("  WARN: Weld {0} = Phase {1}, esperaba {2}", 
+                                            w.Identifier.ID, verifyPhase, targetPhase));
+                                    }
+                                }
+                            }
+
+                            weldsChanged += successCount;
+                            weldsSkipped += failCount;
+                            
+                            log.AppendLine("");
+                            log.AppendLine(string.Format("==> {0} soldaduras OK a Phase {1}", successCount, targetPhase));
+                            if (failCount > 0)
+                            {
+                                log.AppendLine(string.Format("==> {0} soldaduras fallaron", failCount));
+                            }
+                            log.AppendLine("");
+                        }
+                        catch (Exception ex)
+                        {
+                            weldsSkipped += weldsToChange.Count;
+                            log.AppendLine(string.Format("ERROR al aplicar Phase {0}: {1}", targetPhase, ex.Message));
+                        }
+                    }
+
+                    // Commit de cambios
                     model.CommitChanges();
+                    System.Threading.Thread.Sleep(500);
                 }
 
-                // Reporte final
+                // PASO 3: Reporte final
                 string scope = processOnlySelected ? "SELECCIONADAS" : "TODO EL MODELO";
                 
-                string finalReport = $"???????????????????????????????????????\n" +
-                                   $"  SINCRONIZACIÓN DE PHASE - SOLDADURAS\n" +
-                                   $"  Alcance: {scope}\n" +
-                                   $"???????????????????????????????????????\n\n" +
-                                   $"Soldaduras procesadas: {weldsProcessed}\n" +
-                                   $"Soldaduras actualizadas: {weldsChanged}\n" +
-                                   $"Soldaduras omitidas (ya correctas): {weldsSkipped}\n" +
-                                   $"Soldaduras sin Phase en piezas: {weldsNoPhase}\n\n";
+                string finalReport = "=======================================\n" +
+                                   "  SINCRONIZACION DE PHASE - SOLDADURAS\n" +
+                                   string.Format("  Alcance: {0}\n", scope) +
+                                   "=======================================\n\n" +
+                                   string.Format("Soldaduras procesadas: {0}\n", weldsProcessed) +
+                                   string.Format("Soldaduras actualizadas: {0}\n", weldsChanged) +
+                                   string.Format("Soldaduras omitidas (ya correctas): {0}\n", weldsSkipped) +
+                                   string.Format("Soldaduras sin Phase en piezas: {0}\n\n", weldsNoPhase);
 
                 if (weldsChanged > 0)
                 {
-                    finalReport += "? Cambios guardados en el modelo.\n\n";
+                    finalReport += "[OK] Cambios guardados en el modelo.\n\n";
+                }
+                else
+                {
+                    finalReport += "[INFO] No se realizaron cambios.\n\n";
                 }
 
-                if (log.Length > 0 && weldsChanged > 0)
+                if (log.Length > 0)
                 {
-                    finalReport += $"???????????????????????????????????????\n" +
-                                 $"DETALLES DE CAMBIOS:\n" +
-                                 $"???????????????????????????????????????\n" +
+                    finalReport += "=======================================\n" +
+                                 "DETALLES:\n" +
+                                 "=======================================\n" +
                                  log.ToString();
                 }
 
-                System.Windows.Forms.MessageBox.Show(finalReport,
-                    "Reporte de Sincronización",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    weldsChanged > 0 ? System.Windows.Forms.MessageBoxIcon.Information : System.Windows.Forms.MessageBoxIcon.Warning);
+                // Guardar log en archivo
+                string logPath = "";
+                try
+                {
+                    logPath = System.IO.Path.Combine(
+                        System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop),
+                        string.Format("SyncWeldPhase_{0}.txt", System.DateTime.Now.ToString("yyyyMMdd_HHmmss")));
+                    
+                    System.IO.File.WriteAllText(logPath, finalReport, System.Text.Encoding.UTF8);
+                }
+                catch
+                {
+                    logPath = "";
+                }
+
+                // Mostrar reporte con botones
+                System.Windows.Forms.Form reportForm = new System.Windows.Forms.Form();
+                reportForm.Text = "Reporte de Sincronizacion";
+                reportForm.Width = 700;
+                reportForm.Height = 600;
+                reportForm.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+                reportForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+                reportForm.MaximizeBox = true;
+                reportForm.MinimizeBox = false;
+
+                System.Windows.Forms.TextBox txtReport = new System.Windows.Forms.TextBox();
+                txtReport.Multiline = true;
+                txtReport.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+                txtReport.ReadOnly = true;
+                txtReport.Font = new System.Drawing.Font("Consolas", 9);
+                txtReport.Dock = System.Windows.Forms.DockStyle.Fill;
+                txtReport.Text = finalReport;
+                txtReport.WordWrap = false;
+
+                System.Windows.Forms.Panel pnlButtons = new System.Windows.Forms.Panel();
+                pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
+                pnlButtons.Height = 50;
+
+                System.Windows.Forms.Button btnCopy = new System.Windows.Forms.Button();
+                btnCopy.Text = "Copiar al Portapapeles";
+                btnCopy.Width = 180;
+                btnCopy.Height = 30;
+                btnCopy.Left = 10;
+                btnCopy.Top = 10;
+                btnCopy.Click += delegate
+                {
+                    try
+                    {
+                        System.Windows.Forms.Clipboard.SetText(finalReport);
+                        System.Windows.Forms.MessageBox.Show("Reporte copiado al portapapeles!", 
+                            "Exito", System.Windows.Forms.MessageBoxButtons.OK, 
+                            System.Windows.Forms.MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Windows.Forms.MessageBox.Show("Error al copiar: " + ex.Message, 
+                            "Error", System.Windows.Forms.MessageBoxButtons.OK, 
+                            System.Windows.Forms.MessageBoxIcon.Error);
+                    }
+                };
+
+                System.Windows.Forms.Button btnOpenFile = new System.Windows.Forms.Button();
+                btnOpenFile.Text = "Abrir Archivo";
+                btnOpenFile.Width = 120;
+                btnOpenFile.Height = 30;
+                btnOpenFile.Left = 200;
+                btnOpenFile.Top = 10;
+                btnOpenFile.Enabled = (logPath != "");
+                if (logPath != "")
+                {
+                    btnOpenFile.Click += delegate
+                    {
+                        try
+                        {
+                            System.Diagnostics.Process.Start(logPath);
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Windows.Forms.MessageBox.Show("Error al abrir archivo: " + ex.Message, 
+                                "Error", System.Windows.Forms.MessageBoxButtons.OK, 
+                                System.Windows.Forms.MessageBoxIcon.Error);
+                        }
+                    };
+                }
+
+                System.Windows.Forms.Button btnClose = new System.Windows.Forms.Button();
+                btnClose.Text = "Cerrar";
+                btnClose.Width = 100;
+                btnClose.Height = 30;
+                btnClose.Left = 330;
+                btnClose.Top = 10;
+                btnClose.Click += delegate { reportForm.Close(); };
+
+                pnlButtons.Controls.Add(btnCopy);
+                pnlButtons.Controls.Add(btnOpenFile);
+                pnlButtons.Controls.Add(btnClose);
+
+                reportForm.Controls.Add(txtReport);
+                reportForm.Controls.Add(pnlButtons);
+
+                reportForm.ShowDialog();
             }
             catch (Exception ex)
             {
                 System.Windows.Forms.MessageBox.Show(
-                    $"Error crítico: {ex.Message}\n\n{ex.StackTrace}",
+                    string.Format("Error critico: {0}\n\n{1}", ex.Message, ex.StackTrace),
                     "Error",
                     System.Windows.Forms.MessageBoxButtons.OK,
                     System.Windows.Forms.MessageBoxIcon.Error);

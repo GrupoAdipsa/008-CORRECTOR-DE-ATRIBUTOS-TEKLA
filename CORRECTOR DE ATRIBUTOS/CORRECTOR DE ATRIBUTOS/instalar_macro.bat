@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
-REM Script de instalación de macro para Tekla
-REM Versión: 5.0 - Funciona desde cualquier ubicación
+REM Script de instalacion de macro para Tekla
+REM Version: 5.2 - Logica corregida de busqueda
 
 echo ========================================
 echo   INSTALAR MACRO: SyncWeldPhaseFromParts
@@ -9,54 +9,74 @@ echo ========================================
 echo.
 
 REM Determinar el directorio correcto
-REM El script debe estar en: CORRECTOR DE ATRIBUTOS\
-REM Pero puede ejecutarse desde: CORRECTOR DE ATRIBUTOS\CORRECTOR DE ATRIBUTOS\
-
 set SCRIPT_DIR=%~dp0
 echo Directorio del script: %SCRIPT_DIR%
 echo.
 
 REM Detectar si estamos en el subdirectorio y ajustar
-REM NOTA: MacroPlantilla ahora está FUERA del proyecto C#
-if exist "%SCRIPT_DIR%..\MacroPlantilla\SyncWeldPhaseFromParts.cs" (
-    set BASE_DIR=%SCRIPT_DIR%..\
-    echo ? Macro encontrada (un nivel arriba)
-) else if exist "%SCRIPT_DIR%MacroPlantilla\SyncWeldPhaseFromParts.cs" (
-    set BASE_DIR=%SCRIPT_DIR%
-    echo ? Macro encontrada (mismo directorio)
-) else (
-    REM Intentar con ruta absoluta
-    set BASE_DIR=C:\Users\Kevin Flores\Documents\003-COMPARAR-PIEZAS-TEKLA\
-    if exist "!BASE_DIR!MacroPlantilla\SyncWeldPhaseFromParts.cs" (
-        echo ? Usando ruta absoluta (raíz del repositorio)
-    ) else (
-        echo ? ERROR: No se puede determinar la ubicación del archivo
-        echo.
-        echo Directorio actual: %CD%
-        echo Directorio del script: %SCRIPT_DIR%
-        echo.
-        pause
-        exit /b 1
-    )
+REM NOTA: MacroPlantilla esta en la raiz del repositorio (008-CORRECTOR-DE-ATRIBUTOS-TEKLA\MacroPlantilla\)
+
+set SOURCE=
+set BASE_DIR=
+
+REM Probar dos niveles arriba (desde CORRECTOR DE ATRIBUTOS\CORRECTOR DE ATRIBUTOS\)
+if exist "%SCRIPT_DIR%..\..\MacroPlantilla\SyncWeldPhaseFromParts_OLD.cs" (
+    set BASE_DIR=%SCRIPT_DIR%..\..\ 
+    set SOURCE=%SCRIPT_DIR%..\..\MacroPlantilla\SyncWeldPhaseFromParts_OLD.cs
+    echo [OK] Macro encontrada: dos niveles arriba - raiz del repositorio
+    goto :FOUND
 )
 
-echo Base directory: %BASE_DIR%
+REM Probar un nivel arriba (desde CORRECTOR DE ATRIBUTOS\)
+if exist "%SCRIPT_DIR%..\MacroPlantilla\SyncWeldPhaseFromParts_OLD.cs" (
+    set BASE_DIR=%SCRIPT_DIR%..\
+    set SOURCE=%SCRIPT_DIR%..\MacroPlantilla\SyncWeldPhaseFromParts_OLD.cs
+    echo [OK] Macro encontrada: un nivel arriba
+    goto :FOUND
+)
+
+REM Probar mismo directorio
+if exist "%SCRIPT_DIR%MacroPlantilla\SyncWeldPhaseFromParts_OLD.cs" (
+    set BASE_DIR=%SCRIPT_DIR%
+    set SOURCE=%SCRIPT_DIR%MacroPlantilla\SyncWeldPhaseFromParts_OLD.cs
+    echo [OK] Macro encontrada: mismo directorio
+    goto :FOUND
+)
+
+REM Si llegamos aqui, no se encontro el archivo
+echo [ERROR] No se puede encontrar el archivo de la macro
+echo.
+echo Buscando en:
+echo   - %SCRIPT_DIR%..\..\MacroPlantilla\SyncWeldPhaseFromParts_OLD.cs
+echo   - %SCRIPT_DIR%..\MacroPlantilla\SyncWeldPhaseFromParts_OLD.cs
+echo   - %SCRIPT_DIR%MacroPlantilla\SyncWeldPhaseFromParts_OLD.cs
+echo.
+echo Directorio actual: %CD%
+echo Directorio del script: %SCRIPT_DIR%
+echo.
+echo NOTA: Asegurate de estar ejecutando el script desde:
+echo   CORRECTOR DE ATRIBUTOS\CORRECTOR DE ATRIBUTOS\instalar_macro.bat
+echo.
+pause
+exit /b 1
+
+:FOUND
+echo Directorio base: %BASE_DIR%
+echo Archivo fuente: %SOURCE%
 echo.
 
 echo [1/5] Verificando archivo fuente...
 echo.
 
-set SOURCE=%BASE_DIR%MacroPlantilla\SyncWeldPhaseFromParts.cs
-
 if exist "%SOURCE%" (
-    echo    ? Archivo fuente encontrado
+    echo    [OK] Archivo fuente encontrado
     for %%F in ("%SOURCE%") do (
         echo    Nombre: %%~nxF
-        echo    Tamaño: %%~zF bytes
+        echo    Tamano: %%~zF bytes
         echo    Fecha:  %%~tF
     )
 ) else (
-    echo    ? ERROR: Archivo fuente no encontrado
+    echo    [ERROR] Archivo fuente no encontrado
     echo    Ruta: %SOURCE%
     echo.
     pause
@@ -64,20 +84,23 @@ if exist "%SOURCE%" (
 )
 
 echo.
-echo [2/5] Verificando archivo destino...
+echo [2/5] Verificando directorio destino de Tekla...
 echo.
 
-set TARGET=C:\ProgramData\Trimble\Tekla Structures\2021.0\Environments\common\macros\modeling\SyncWeldPhaseFromParts.cs
 set TARGETDIR=C:\ProgramData\Trimble\Tekla Structures\2021.0\Environments\common\macros\modeling
+set TARGET=%TARGETDIR%\SyncWeldPhaseFromParts.cs
 
-REM Verificar si ya existe una versión anterior
+echo Directorio destino: %TARGETDIR%
+echo.
+
+REM Verificar si ya existe una version anterior
 if exist "%TARGET%" (
-    echo    ? Ya existe una versión de la macro
+    echo    [INFO] Ya existe una version de la macro
     for %%F in ("%TARGET%") do (
-        echo    Tamaño actual: %%~zF bytes
+        echo    Tamano actual: %%~zF bytes
         echo    Fecha actual:  %%~tF
     )
-    echo    Se sobrescribirá...
+    echo    Se sobrescribira...
     echo.
 )
 
@@ -90,14 +113,14 @@ if not exist "%TARGETDIR%" (
     echo    Creando directorio: modeling\
     mkdir "%TARGETDIR%"
     if errorlevel 1 (
-        echo    ? ERROR: No se pudo crear el directorio
+        echo    [ERROR] No se pudo crear el directorio
         echo    Ejecuta este script como Administrador (click derecho)
         pause
         exit /b 1
     )
-    echo    ? Directorio creado
+    echo    [OK] Directorio creado
 ) else (
-    echo    ? Directorio existe
+    echo    [OK] Directorio existe
 )
 
 echo.
@@ -107,48 +130,50 @@ echo.
 echo    De: %SOURCE%
 echo    A:  %TARGET%
 echo.
+echo    NOTA: El archivo _OLD.cs se copia como SyncWeldPhaseFromParts.cs
+echo.
 
 copy /Y "%SOURCE%" "%TARGET%"
 
 if errorlevel 1 (
     echo.
-    echo    ? ERROR: No se pudo copiar el archivo
+    echo    [ERROR] No se pudo copiar el archivo
     echo.
-    echo    Código de error: %ERRORLEVEL%
+    echo    Codigo de error: %ERRORLEVEL%
     echo.
     echo    Posibles causas:
     echo    1. Permisos insuficientes - Ejecutar como Administrador
     echo    2. Archivo en uso por Tekla
-    echo    3. Tekla no instalado en ruta estándar
+    echo    3. Tekla no instalado en ruta estandar
     echo.
     pause
     exit /b 1
 )
 
 echo.
-echo [5/5] Verificando instalación...
+echo [5/5] Verificando instalacion...
 echo.
 
 if exist "%TARGET%" (
-    echo    ? Archivo copiado correctamente
+    echo    [OK] Archivo copiado correctamente
     echo.
-    REM Comparar tamaños
+    REM Comparar tamanos
     for %%F in ("%SOURCE%") do set SOURCE_SIZE=%%~zF
     for %%F in ("%TARGET%") do set TARGET_SIZE=%%~zF
     
     if !SOURCE_SIZE! EQU !TARGET_SIZE! (
-        echo    ? Tamaños coinciden: !SOURCE_SIZE! bytes
+        echo    [OK] Tamanos coinciden: !SOURCE_SIZE! bytes
     ) else (
-        echo    ? Tamaños diferentes:
+        echo    [WARN] Tamanos diferentes:
         echo      Fuente: !SOURCE_SIZE! bytes
         echo      Destino: !TARGET_SIZE! bytes
     )
     echo.
     echo ========================================
-    echo   INSTALACIÓN EXITOSA
+    echo   INSTALACION EXITOSA
     echo ========================================
     echo.
-    echo Ubicación: %TARGET%
+    echo Ubicacion: %TARGET%
     echo.
     echo ========================================
     echo   IMPORTANTE: REINICIAR TEKLA
@@ -156,18 +181,21 @@ if exist "%TARGET%" (
     echo.
     echo Tekla solo detecta macros nuevas al iniciar.
     echo.
+    echo PASOS SIGUIENTES:
     echo 1. Cerrar Tekla Structures completamente
     echo 2. Volver a abrir Tekla
     echo 3. Tools ^> Macros... ^> SyncWeldPhaseFromParts
+    echo 4. Seleccionar la macro y hacer clic en Run
     echo.
     echo ========================================
 ) else (
-    echo    ? ERROR: El archivo no se encuentra en destino
-    echo    Algo salió mal durante la copia
+    echo    [ERROR] El archivo no se encuentra en destino
+    echo    Algo salio mal durante la copia
     echo.
 )
 
 echo.
 pause
 endlocal
+
 
