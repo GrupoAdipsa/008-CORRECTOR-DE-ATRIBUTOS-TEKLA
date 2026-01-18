@@ -1,64 +1,65 @@
-# ?? Corrector de Atributos Tekla
+ï»¿# Corrector de Atributos Tekla
 
-Sistema automatizado para sincronización de atributos Phase en Tekla Structures, diseñado para mantener la coherencia de fases entre Main Parts, Secondary Parts, Bolts y Welds dentro de los Assemblies.
+Sistema automatizado para sincronizacion de atributos Phase en Tekla Structures, disenado para mantener la coherencia de fases entre Main Parts, Secondary Parts, Bolts y Welds dentro de los Assemblies.
 
-## ?? Tabla de Contenidos
+## Tabla de Contenidos
 
-- [Descripción General](#-descripción-general)
-- [Características](#-características)
-- [Requisitos del Sistema](#-requisitos-del-sistema)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Instalación](#-instalación)
-- [Uso](#-uso)
-- [Arquitectura y Componentes](#-arquitectura-y-componentes)
-- [Flujo de Trabajo](#-flujo-de-trabajo)
-- [Documentación Adicional](#-documentación-adicional)
-- [Solución de Problemas](#-solución-de-problemas)
-- [Contribución](#-contribución)
+- [Descripcion General](#descripcion-general)
+- [Caracteristicas](#caracteristicas)
+- [Requisitos del Sistema](#requisitos-del-sistema)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Instalacion](#instalacion)
+- [Uso](#uso)
+- [Arquitectura y Componentes](#arquitectura-y-componentes)
+- [Documentacion Adicional](#documentacion-adicional)
+- [Solucion de Problemas](#solucion-de-problemas)
+- [Contribucion](#contribucion)
 
 ---
 
-## ?? Descripción General
+## Descripcion General
 
-**Corrector de Atributos Tekla** es una solución completa para sincronizar automáticamente el atributo `Phase` (fase) entre todos los componentes de un Assembly en Tekla Structures. El sistema consta de dos componentes principales:
+**Corrector de Atributos Tekla** es una solucion completa para sincronizar automaticamente el atributo `Phase` (fase) entre todos los componentes de un Assembly en Tekla Structures.
 
-1. **Aplicación de Sincronización** (.NET): Sincroniza Parts y Bolts
+### Componentes Principales
+
+1. **Aplicacion de Sincronizacion** (.NET): Sincroniza Parts y Bolts
 2. **Macro de Tekla**: Sincroniza Welds (soldaduras)
 
-### ¿Qué problema resuelve?
+### Que problema resuelve?
 
 En proyectos de Tekla Structures, mantener la coherencia del atributo `Phase` entre todos los elementos de un Assembly puede ser tedioso y propenso a errores. Este sistema automatiza completamente el proceso:
 
-- ? Detecta automáticamente la `Phase` de la Main Part
-- ? Propaga el valor a todas las Secondary Parts
-- ? Actualiza todos los Bolts del Assembly
-- ? Sincroniza las Welds basándose en las piezas conectadas
-- ? Genera reportes detallados de todos los cambios
+- Detecta automaticamente la Phase de la Main Part
+- Propaga el valor a todas las Secondary Parts
+- Actualiza todos los Bolts del Assembly
+- Sincroniza las Welds basandose en las piezas conectadas
+- Genera reportes detallados de todos los cambios
 
 ---
 
-## ? Características
+## Caracteristicas
 
 ### Sincronizador de Assemblies
 
-- ?? **Sincronización automática** de Parts y Bolts basada en Main Part
-- ?? **Reportes detallados** de cambios realizados
-- ?? **Selección flexible**: selecciona Assemblies, Parts o Bolts individuales
-- ??? **Validación robusta** con múltiples métodos de lectura/escritura
-- ? **Alto rendimiento**: procesamiento en lote con commit único
-- ?? **Detección de errores** con mensajes claros
+- **Sincronizacion automatica** de Parts y Bolts basada en Main Part
+- **Reportes detallados** de cambios realizados
+- **Seleccion flexible**: selecciona Assemblies, Parts o Bolts individuales
+- **Validacion robusta** con multiples metodos de lectura/escritura
+- **Alto rendimiento**: procesamiento en lote con commit unico
+- **Deteccion de errores** con mensajes claros
 
 ### Macro de Soldaduras
 
-- ?? **Sincronización inteligente** basada en piezas conectadas
-- ??? **Alcance configurable**: seleccionadas o todas las soldaduras
-- ?? **Reporte completo** de soldaduras procesadas
-- ?? **Una sola macro** para todas las fases
-- ?? **Ejecución rápida** directa desde Tekla
+- **Sincronizacion inteligente** basada en piezas conectadas
+- **Alcance configurable**: seleccionadas o todas las soldaduras
+- **Reporte completo** de soldaduras procesadas
+- **Una sola macro** para todas las fases
+- **Ejecucion rapida** directa desde Tekla
 
 ---
 
-## ?? Requisitos del Sistema
+## Requisitos del Sistema
 
 ### Software Requerido
 
@@ -80,126 +81,126 @@ En proyectos de Tekla Structures, mantener la coherencia del atributo `Phase` en
 
 ---
 
-## ?? Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 008-CORRECTOR-DE-ATRIBUTOS-TEKLA/
-?
-??? ?? README.md                                    ? Este archivo
-??? ?? instructions.md                              ? Instrucciones de codificación
-?
-??? ?? CORRECTOR DE ATRIBUTOS/                      ? Proyecto principal
-?   ??? ?? CORRECTOR DE ATRIBUTOS.sln              ? Solución de Visual Studio
-?   ??? ?? CORRECTOR DE ATRIBUTOS.csproj           ? Archivo de proyecto
-?   ?
-?   ??? ?? CORRECTOR DE ATRIBUTOS/                 ? Código fuente
-?   ?   ??? ?? PhaseSynchronizer.cs                ? Motor de sincronización (CORE)
-?   ?   ??? ?? PhaseSyncForm.cs                    ? Interfaz gráfica
-?   ?   ??? ?? PhaseSyncLauncher.cs                ? Punto de entrada
-?   ?   ??? ?? SyncReport.cs                       ? Sistema de reportes
-?   ?   ??? ?? PhasePropertyDiagnostic.cs          ? Herramienta de diagnóstico
-?   ?   ?
-?   ?   ??? ?? ejecutar.bat                        ? Script de ejecución rápida
-?   ?   ??? ?? instalar_macro.bat                  ? Instalador de macro
-?   ?   ??? ?? verificar_macro.bat                 ? Verificar instalación
-?   ?   ?
-?   ?   ??? ?? Documentación/                      ? Documentos técnicos
-?   ?       ??? RESUMEN_FINAL_COMPLETO.md
-?   ?       ??? README_AUTOMATIZACION_COMPLETA.md
-?   ?       ??? GUIA_EJECUTAR.md
-?   ?       ??? ... (40+ documentos)
-?   ?
-?   ??? ?? Installer/                              ? Archivos de instalación
-?   ?   ??? BuildDrop/net48/
-?   ?       ??? CORRECTOR_DE_ATRIBUTOS.exe         ? Ejecutable compilado
-?   ?
-?   ??? ?? MainForm.cs                             ? Form del plugin (legacy)
-?   ??? ?? MainForm.Designer.cs
-?   ??? ?? ModelPlugin.cs                          ? Plugin base (legacy)
-?   ?
-?   ??? ?? Properties/                             ? Propiedades del proyecto
-?       ??? AssemblyInfo.cs
-?
-??? ?? MacroPlantilla/                             ? Macros de Tekla
-    ??? ?? SyncWeldPhaseFromParts_OLD.cs           ? Plantilla de macro (backup)
+|
++-- README.md                                    (Este archivo)
++-- instructions.md                              (Instrucciones de codificacion)
+|
++-- CORRECTOR DE ATRIBUTOS/                      (Proyecto principal)
+    +-- CORRECTOR DE ATRIBUTOS.sln              (Solucion de Visual Studio)
+    +-- CORRECTOR DE ATRIBUTOS.csproj           (Archivo de proyecto)
+    |
+    +-- CORRECTOR DE ATRIBUTOS/                 (Codigo fuente)
+    |   +-- PhaseSynchronizer.cs                (Motor de sincronizacion - CORE)
+    |   +-- PhaseSyncForm.cs                    (Interfaz grafica)
+    |   +-- PhaseSyncLauncher.cs                (Punto de entrada)
+    |   +-- SyncReport.cs                       (Sistema de reportes)
+    |   +-- PhasePropertyDiagnostic.cs          (Herramienta de diagnostico)
+    |   |
+    |   +-- ejecutar.bat                        (Script de ejecucion rapida)
+    |   +-- instalar_macro.bat                  (Instalador de macro)
+    |   +-- verificar_macro.bat                 (Verificar instalacion)
+    |   |
+    |   +-- Documentacion/                      (40+ documentos tecnicos)
+    |       +-- RESUMEN_FINAL_COMPLETO.md
+    |       +-- README_AUTOMATIZACION_COMPLETA.md
+    |       +-- GUIA_EJECUTAR.md
+    |       +-- ... (mas documentos)
+    |
+    +-- Installer/                              (Archivos de instalacion)
+    |   +-- BuildDrop/net48/
+    |       +-- CORRECTOR_DE_ATRIBUTOS.exe      (Ejecutable compilado)
+    |
+    +-- MainForm.cs                             (Form del plugin - legacy)
+    +-- MainForm.Designer.cs
+    +-- ModelPlugin.cs                          (Plugin base - legacy)
+    |
+    +-- Properties/                             (Propiedades del proyecto)
+        +-- AssemblyInfo.cs
+|
++-- MacroPlantilla/                             (Macros de Tekla)
+    +-- SyncWeldPhaseFromParts_OLD.cs           (Plantilla de macro - backup)
 ```
 
 ### Dependencias entre Archivos
 
-La arquitectura del sistema sigue un patrón modular con separación clara de responsabilidades:
+La arquitectura del sistema sigue un patron modular con separacion clara de responsabilidades:
 
-#### ?? Flujo Principal de Ejecución
+#### Flujo Principal de Ejecucion
 
 ```
 PhaseSyncLauncher.cs (Main Entry Point)
-    ?
-    ??? Crea ? PhaseSyncForm.cs (Interfaz Gráfica)
-            ?
-            ??? Crea ? PhaseSynchronizer.cs (Motor Core)
-                    ?
-                    ??? Genera ? SyncReport.cs (Reportes)
+    |
+    +-- Crea --> PhaseSyncForm.cs (Interfaz Grafica)
+            |
+            +-- Crea --> PhaseSynchronizer.cs (Motor Core)
+                    |
+                    +-- Genera --> SyncReport.cs (Reportes)
 ```
 
-#### ?? Módulos y sus Responsabilidades
+#### Modulos y sus Responsabilidades
 
-1. **`PhaseSyncLauncher.cs`**
-   - Punto de entrada de la aplicación (`Main()`)
-   - Inicializa el formulario principal
-   - No depende de otros módulos del proyecto
+**1. PhaseSyncLauncher.cs**
+- Punto de entrada de la aplicacion (Main())
+- Inicializa el formulario principal
+- No depende de otros modulos del proyecto
 
-2. **`PhaseSyncForm.cs`**
-   - Interfaz gráfica de usuario (Windows Forms)
-   - Maneja eventos de botones y controles
-   - Depende de:
-     - `PhaseSynchronizer.cs` (para ejecutar sincronización)
-     - `SyncReport.cs` (para mostrar resultados)
+**2. PhaseSyncForm.cs**
+- Interfaz grafica de usuario (Windows Forms)
+- Maneja eventos de botones y controles
+- Depende de:
+  - PhaseSynchronizer.cs (para ejecutar sincronizacion)
+  - SyncReport.cs (para mostrar resultados)
 
-3. **`PhaseSynchronizer.cs`** ?? **NÚCLEO DEL SISTEMA**
-   - Lógica principal de sincronización
-   - Interactúa directamente con la API de Tekla
-   - Procesa Assemblies, Parts y Bolts
-   - Depende de:
-     - `Tekla.Structures.Model` (API de Tekla)
-     - `SyncReport.cs` (para registrar eventos)
-   - Utilizado por:
-     - `PhaseSyncForm.cs`
+**3. PhaseSynchronizer.cs** **[NUCLEO DEL SISTEMA]**
+- Logica principal de sincronizacion
+- Interactua directamente con la API de Tekla
+- Procesa Assemblies, Parts y Bolts
+- Depende de:
+  - Tekla.Structures.Model (API de Tekla)
+  - SyncReport.cs (para registrar eventos)
+- Utilizado por:
+  - PhaseSyncForm.cs
 
-4. **`SyncReport.cs`**
-   - Sistema de logging y reportes
-   - Acumula estadísticas de sincronización
-   - Genera reportes formateados
-   - No depende de otros módulos del proyecto
-   - Utilizado por:
-     - `PhaseSynchronizer.cs`
-     - `PhaseSyncForm.cs`
+**4. SyncReport.cs**
+- Sistema de logging y reportes
+- Acumula estadisticas de sincronizacion
+- Genera reportes formateados
+- No depende de otros modulos del proyecto
+- Utilizado por:
+  - PhaseSynchronizer.cs
+  - PhaseSyncForm.cs
 
-5. **`PhasePropertyDiagnostic.cs`**
-   - Herramienta de diagnóstico
-   - Prueba diferentes métodos de lectura/escritura de Phase
-   - Independiente del flujo principal
-   - Usado para troubleshooting
+**5. PhasePropertyDiagnostic.cs**
+- Herramienta de diagnostico
+- Prueba diferentes metodos de lectura/escritura de Phase
+- Independiente del flujo principal
+- Usado para troubleshooting
 
-#### ?? Archivos Legacy (Plugin de Tekla)
+#### Archivos Legacy (Plugin de Tekla)
 
-Estos archivos son parte de la plantilla original del plugin de Tekla, pero **NO se usan** en la versión actual:
+Estos archivos son parte de la plantilla original del plugin de Tekla, pero **NO se usan** en la version actual:
 
-- **`ModelPlugin.cs`**: Plugin base generado por Tekla (plantilla)
-- **`MainForm.cs`**: Formulario del plugin (plantilla)
-- **`MainForm.Designer.cs`**: Diseñador del formulario
+- **ModelPlugin.cs**: Plugin base generado por Tekla (plantilla)
+- **MainForm.cs**: Formulario del plugin (plantilla)
+- **MainForm.Designer.cs**: Disenador del formulario
 
-**Nota**: El proyecto actual funciona como aplicación standalone, no como plugin de Tekla.
+**Nota**: El proyecto actual funciona como aplicacion standalone, no como plugin de Tekla.
 
-#### ?? Macros de Tekla (Separadas)
+#### Macros de Tekla (Separadas)
 
-- **`MacroPlantilla/SyncWeldPhaseFromParts_OLD.cs`**
+- **MacroPlantilla/SyncWeldPhaseFromParts_OLD.cs**
   - Plantilla de macro para sincronizar soldaduras
   - Se instala en: `C:\ProgramData\Trimble\Tekla Structures\2021.0\Environments\common\macros\`
-  - **NO se compila con el proyecto C#** (se compila automáticamente por Tekla)
+  - **NO se compila con el proyecto C#** (se compila automaticamente por Tekla)
   - Funciona de manera completamente independiente
 
 ---
 
-## ?? Instalación
+## Instalacion
 
 ### Paso 1: Clonar o Descargar el Repositorio
 
@@ -208,7 +209,7 @@ git clone https://github.com/GrupoAdipsa/008-CORRECTOR-DE-ATRIBUTOS-TEKLA.git
 cd 008-CORRECTOR-DE-ATRIBUTOS-TEKLA
 ```
 
-### Paso 2: Compilar la Aplicación (Opcional)
+### Paso 2: Compilar la Aplicacion (Opcional)
 
 Si necesitas recompilar el proyecto:
 
@@ -217,7 +218,7 @@ cd "CORRECTOR DE ATRIBUTOS"
 dotnet build "CORRECTOR DE ATRIBUTOS.sln" --configuration Release
 ```
 
-**Nota**: El ejecutable precompilado ya está disponible en `Installer/BuildDrop/net48/CORRECTOR_DE_ATRIBUTOS.exe`
+**Nota**: El ejecutable precompilado ya esta disponible en `Installer/BuildDrop/net48/CORRECTOR_DE_ATRIBUTOS.exe`
 
 ### Paso 3: Instalar la Macro de Soldaduras
 
@@ -226,35 +227,35 @@ cd "CORRECTOR DE ATRIBUTOS\CORRECTOR DE ATRIBUTOS"
 instalar_macro.bat
 ```
 
-Este script copia la macro a la ubicación correcta de Tekla:
+Este script copia la macro a la ubicacion correcta de Tekla:
 ```
 C:\ProgramData\Trimble\Tekla Structures\2021.0\Environments\common\macros\
 ```
 
-### Paso 4: Verificar Instalación
+### Paso 4: Verificar Instalacion
 
 ```batch
 verificar_macro.bat
 ```
 
-? La instalación está completa cuando:
+**Checklist de Verificacion**:
 - El ejecutable `CORRECTOR_DE_ATRIBUTOS.exe` existe
 - La macro aparece en Tekla: `Tools > Macros... > SyncWeldPhaseFromParts`
 
 ---
 
-## ?? Uso
+## Uso
 
-### 1?? Sincronizar Assemblies (Parts y Bolts)
+### 1. Sincronizar Assemblies (Parts y Bolts)
 
-#### Opción A: Usando el Script
+#### Opcion A: Usando el Script
 
 ```batch
 cd "CORRECTOR DE ATRIBUTOS\CORRECTOR DE ATRIBUTOS"
 ejecutar.bat
 ```
 
-#### Opción B: Ejecutando Directamente
+#### Opcion B: Ejecutando Directamente
 
 ```batch
 cd "CORRECTOR DE ATRIBUTOS\Installer\BuildDrop\net48"
@@ -263,16 +264,16 @@ CORRECTOR_DE_ATRIBUTOS.exe
 
 #### Proceso:
 
-1. **Se abre una ventana de selección en Tekla**
+1. **Se abre una ventana de seleccion en Tekla**
 2. **Selecciona** los Assemblies, Parts o Bolts que deseas sincronizar
-3. **Presiona ENTER** o haz clic derecho ? Confirmar
-4. **Se procesa** la sincronización automáticamente
+3. **Presiona ENTER** o haz clic derecho y Confirmar
+4. **Se procesa** la sincronizacion automaticamente
 5. **Se muestra** un reporte con los resultados
 
 #### Ejemplo de Reporte:
 
 ```
-=== REPORTE DE SINCRONIZACIÓN ===
+=== REPORTE DE SINCRONIZACION ===
 Assemblies procesados: 15
 Parts evaluadas: 120
   - Modificadas: 118
@@ -281,14 +282,14 @@ Bolts evaluados: 87
   - Modificados: 85
   - Sin cambios: 2
 
-? Sincronización completada exitosamente
+[OK] Sincronizacion completada exitosamente
 ```
 
 ---
 
-### 2?? Sincronizar Soldaduras (Welds)
+### 2. Sincronizar Soldaduras (Welds)
 
-#### Primera Ejecución:
+#### Primera Ejecucion:
 
 1. **Reinicia Tekla Structures** (necesario para detectar la macro)
 2. Abre tu modelo en Tekla
@@ -296,23 +297,23 @@ Bolts evaluados: 87
 4. Busca `SyncWeldPhaseFromParts`
 5. Haz clic en `Run`
 
-#### Configuración del Alcance:
+#### Configuracion del Alcance:
 
-Se te preguntará:
+Se te preguntara:
 
 ```
-¿Procesar solo las soldaduras seleccionadas?
-[S] = Sí (solo seleccionadas)
+Procesar solo las soldaduras seleccionadas?
+[S] = Si (solo seleccionadas)
 [N] = No (todas las soldaduras del modelo)
 ```
 
-- **Opción S**: Ideal para correcciones puntuales
-- **Opción N**: Ideal para sincronización completa inicial
+- **Opcion S**: Ideal para correcciones puntuales
+- **Opcion N**: Ideal para sincronizacion completa inicial
 
 #### Ejemplo de Salida:
 
 ```
-=== Iniciando Sincronización de Soldaduras ===
+=== Iniciando Sincronizacion de Soldaduras ===
 Procesando: Todas las soldaduras del modelo
 
 Soldaduras procesadas: 245
@@ -320,83 +321,103 @@ Soldaduras procesadas: 245
   - Ya correctas: 7
   - Con errores: 0
 
-? Sincronización completada
+[OK] Sincronizacion completada
 ```
 
 ---
 
-### ?? Flujo de Trabajo Recomendado
+### Flujo de Trabajo Recomendado
 
 #### Para Proyectos Nuevos:
 
-```mermaid
-graph TD
-    A[Asignar Phase a Main Parts en Tekla] --> B[Ejecutar Sincronizador]
-    B --> C[Reiniciar Tekla]
-    C --> D[Ejecutar Macro: Todas las soldaduras]
-    D --> E[Proyecto completo sincronizado]
+```
+1. Asignar Phase a Main Parts en Tekla
+   |
+   v
+2. Ejecutar Sincronizador
+   |
+   v
+3. Reiniciar Tekla
+   |
+   v
+4. Ejecutar Macro: Todas las soldaduras
+   |
+   v
+5. Proyecto completo sincronizado
 ```
 
 #### Para Mantenimiento Continuo:
 
-```mermaid
-graph TD
-    A[Agregar nuevos Assemblies] --> B[Ejecutar Sincronizador]
-    B --> C[Ejecutar Macro: Solo seleccionadas]
-    C --> D[Verificar cambios]
+```
+1. Agregar nuevos Assemblies
+   |
+   v
+2. Ejecutar Sincronizador
+   |
+   v
+3. Ejecutar Macro: Solo seleccionadas
+   |
+   v
+4. Verificar cambios
 ```
 
 #### Para Correcciones Puntuales:
 
-```mermaid
-graph TD
-    A[Identificar elementos con Phase incorrecta] --> B[Seleccionar elementos]
-    B --> C[Ejecutar herramienta correspondiente]
-    C --> D[Verificar reporte]
+```
+1. Identificar elementos con Phase incorrecta
+   |
+   v
+2. Seleccionar elementos
+   |
+   v
+3. Ejecutar herramienta correspondiente
+   |
+   v
+4. Verificar reporte
 ```
 
 ---
 
-## ??? Arquitectura y Componentes
+## Arquitectura y Componentes
 
 ### Componente 1: Sincronizador de Assemblies (.NET)
 
 #### Responsabilidades:
-- ? Sincronizar **Secondary Parts** basándose en la **Main Part**
-- ? Sincronizar **Bolts** del Assembly
-- ? Detectar **Welds** que necesitan actualización
-- ? Generar reportes detallados
+- Sincronizar **Secondary Parts** basandose en la **Main Part**
+- Sincronizar **Bolts** del Assembly
+- Detectar **Welds** que necesitan actualizacion
+- Generar reportes detallados
 
-#### Tecnologías:
+#### Tecnologias:
 - **Lenguaje**: C# (.NET Framework 4.8)
 - **Interfaz**: Windows Forms
 - **API**: Tekla Structures API 2021.0
 
 #### Archivos Clave:
 
-##### ?? `PhaseSynchronizer.cs` (Núcleo del Sistema)
+##### PhaseSynchronizer.cs (Nucleo del Sistema)
 
 ```csharp
-// Estructura básica del sincronizador
+// Estructura basica del sincronizador
 
 // 1. Constructor - Inicializa modelo y reporte
 public PhaseSynchronizer()
 {
-    _model = new Model();              // Conexión con Tekla
+    _model = new Model();              // Conexion con Tekla
     _report = new SyncReport();        // Sistema de logging
 }
 
-// 2. Método principal - Ejecución interactiva
+// 2. Metodo principal - Ejecucion interactiva
 public bool ExecuteInteractive()
 {
-    // Paso 1: Obtener selección del usuario en Tekla
+    // Paso 1: Obtener seleccion del usuario en Tekla
     Picker picker = new Picker();
     ModelObjectEnumerator selectedObjects = picker.PickObjects(
         Picker.PickObjectsEnum.PICK_N_OBJECTS,
         "Selecciona piezas o assemblies para sincronizar Phase"
     );
     
-    // Paso 2: Procesar selección
+    // Paso 2: Procesar seleccion
     return ExecuteOnSelection(selectedObjects);
 }
 
@@ -414,7 +435,7 @@ private void SynchronizeAssembly(Assembly assembly)
     // Paso 1: Obtener Main Part del Assembly
     Part mainPart = assembly.GetMainPart() as Part;
     
-    // Paso 2: Leer Phase de la Main Part (múltiples métodos)
+    // Paso 2: Leer Phase de la Main Part (multiples metodos)
     int phaseNumber = ReadPhaseFromPart(mainPart);
     
     // Paso 3: Sincronizar Secondary Parts
@@ -431,7 +452,7 @@ private void SyncSecondaryParts(Assembly assembly, int targetPhase)
     
     foreach (Part part in secondaries)
     {
-        // Aplicar Phase usando múltiples métodos de fallback
+        // Aplicar Phase usando multiples metodos de fallback
         WritePhaseToObject(part, targetPhase);
         part.Modify();
         
@@ -457,24 +478,24 @@ private void SyncBolts(Part mainPart, int targetPhase)
 }
 ```
 
-**Explicación del Flujo:**
+**Explicacion del Flujo:**
 
-1. **Inicialización**: Se crea una conexión con el modelo de Tekla activo
-2. **Selección**: El usuario selecciona elementos en Tekla (Assemblies, Parts o Bolts)
-3. **Agrupación**: Todos los elementos se agrupan por su Assembly padre
+1. **Inicializacion**: Se crea una conexion con el modelo de Tekla activo
+2. **Seleccion**: El usuario selecciona elementos en Tekla (Assemblies, Parts o Bolts)
+3. **Agrupacion**: Todos los elementos se agrupan por su Assembly padre
 4. **Lectura**: Se lee el valor de Phase de la Main Part de cada Assembly
 5. **Escritura**: Se propaga ese valor a todas las Secondary Parts y Bolts
 6. **Commit**: Se guardan todos los cambios en el modelo de Tekla con un solo commit
 7. **Reporte**: Se genera un reporte detallado de todos los cambios
 
-##### ?? `SyncReport.cs` (Sistema de Reportes)
+##### SyncReport.cs (Sistema de Reportes)
 
 ```csharp
 // Estructura del sistema de reportes
 
 public class SyncReport
 {
-    // Contadores de estadísticas
+    // Contadores de estadisticas
     public int PartsEvaluated { get; set; }
     public int PartsChanged { get; set; }
     public int PartsSkipped { get; set; }
@@ -488,7 +509,7 @@ public class SyncReport
     private List<string> _warnings = new List<string>();
     private List<int> _assembliesProcessed = new List<int>();
     
-    // Métodos para registrar eventos
+    // Metodos para registrar eventos
     public void AddError(string message)
     {
         _errors.Add($"[ERROR] {DateTime.Now:HH:mm:ss} - {message}");
@@ -504,44 +525,44 @@ public class SyncReport
     {
         StringBuilder sb = new StringBuilder();
         
-        sb.AppendLine("=== REPORTE DE SINCRONIZACIÓN ===");
+        sb.AppendLine("=== REPORTE DE SINCRONIZACION ===");
         sb.AppendLine($"Assemblies procesados: {_assembliesProcessed.Count}");
         sb.AppendLine($"Parts evaluadas: {PartsEvaluated}");
         sb.AppendLine($"  - Modificadas: {PartsChanged}");
         sb.AppendLine($"  - Sin cambios: {PartsSkipped}");
-        // ... más estadísticas
+        // ... mas estadisticas
         
         return sb.ToString();
     }
 }
 ```
 
-**Propósito del Reporte:**
-- Proporciona visibilidad completa de la operación
+**Proposito del Reporte:**
+- Proporciona visibilidad completa de la operacion
 - Ayuda a identificar problemas (errores y advertencias)
 - Confirma que los cambios se aplicaron correctamente
-- Útil para auditoría y debugging
+- Util para auditoria y debugging
 
 ---
 
 ### Componente 2: Macro de Soldaduras (Tekla)
 
 #### Responsabilidades:
-- ? Sincronizar **Welds** basándose en piezas conectadas
-- ? Operar directamente desde el entorno de Tekla
-- ? Manejar selección flexible (todas o seleccionadas)
+- Sincronizar **Welds** basandose en piezas conectadas
+- Operar directamente desde el entorno de Tekla
+- Manejar seleccion flexible (todas o seleccionadas)
 
-#### Tecnologías:
+#### Tecnologias:
 - **Lenguaje**: C# (compilado por Tekla)
 - **Entorno**: Tekla Macro Engine
 - **API**: Tekla Structures API
 
 #### Archivo Clave:
 
-##### ?? `SyncWeldPhaseFromParts.cs` (Macro de Tekla)
+##### SyncWeldPhaseFromParts.cs (Macro de Tekla)
 
 ```csharp
-// Estructura básica de la macro (versión simplificada)
+// Estructura basica de la macro (version simplificada)
 
 public class SyncWeldPhaseFromParts
 {
@@ -550,7 +571,7 @@ public class SyncWeldPhaseFromParts
         Model model = new Model();
         
         // Paso 1: Preguntar alcance al usuario
-        string input = akit.ValueQuery("¿Procesar solo soldaduras seleccionadas? (S/N)", "N");
+        string input = akit.ValueQuery("Procesar solo soldaduras seleccionadas? (S/N)", "N");
         bool onlySelected = (input.ToUpper() == "S");
         
         // Paso 2: Obtener soldaduras
@@ -601,20 +622,20 @@ public class SyncWeldPhaseFromParts
         return phase;
     }
     
-    // Leer Phase de un objeto (múltiples métodos de fallback)
+    // Leer Phase de un objeto (multiples metodos de fallback)
     private static int ReadPhaseFromObject(ModelObject obj)
     {
         int phase = 0;
         
-        // Método 1: GetReportProperty
+        // Metodo 1: GetReportProperty
         if (obj.GetReportProperty("PHASE", ref phase) && phase > 0)
             return phase;
         
-        // Método 2: GetUserProperty
+        // Metodo 2: GetUserProperty
         if (obj.GetUserProperty("PHASE_NUMBER", ref phase) && phase > 0)
             return phase;
         
-        // Método 3: GetPhase() si existe
+        // Metodo 3: GetPhase() si existe
         try
         {
             Phase phaseObj;
@@ -628,11 +649,11 @@ public class SyncWeldPhaseFromParts
 }
 ```
 
-**Explicación del Flujo:**
+**Explicacion del Flujo:**
 
 1. **Entrada del Usuario**: Se pregunta si procesar todas o solo las seleccionadas
-2. **Obtención**: Se obtienen las soldaduras según el alcance elegido
-3. **Iteración**: Se procesa cada soldadura individualmente
+2. **Obtencion**: Se obtienen las soldaduras segun el alcance elegido
+3. **Iteracion**: Se procesa cada soldadura individualmente
 4. **Lectura**: Se lee el Phase de la pieza principal conectada
 5. **Fallback**: Si no tiene, se lee de la pieza secundaria
 6. **Escritura**: Se aplica el Phase a la soldadura
@@ -641,94 +662,94 @@ public class SyncWeldPhaseFromParts
 
 ---
 
-### ?? Interacción entre Componentes
+### Interaccion entre Componentes
 
 ```
-???????????????????????????????????????????????????????????
-?                    USUARIO EN TEKLA                     ?
-???????????????????????????????????????????????????????????
-                ?                     ?
-                ?                     ?
-????????????????????????????? ????????????????????????????
-?  SINCRONIZADOR (.NET)     ? ?   MACRO (Tekla)          ?
-?                           ? ?                          ?
-?  • PhaseSyncLauncher.cs   ? ?  • SyncWeldPhaseFromParts?
-?  • PhaseSyncForm.cs       ? ?                          ?
-?  • PhaseSynchronizer.cs   ? ?  Sincroniza:             ?
-?  • SyncReport.cs          ? ?  ?? Welds                ?
-?                           ? ?                          ?
-?  Sincroniza:              ? ?  Ubicación:              ?
-?  ?? Parts                 ? ?  ?? Macros de Tekla      ?
-?  ?? Bolts                 ? ?                          ?
-????????????????????????????? ????????????????????????????
-            ?                              ?
-            ????????????????????????????????
-                           ?
-                 ???????????????????????
-                 ?   TEKLA MODEL API   ?
-                 ?                     ?
-                 ?  • Model            ?
-                 ?  • Assembly         ?
-                 ?  • Part             ?
-                 ?  • BoltGroup        ?
-                 ?  • BaseWeld         ?
-                 ???????????????????????
++--------------------------------------------------------+
+|                   USUARIO EN TEKLA                     |
++--------------+---------------------+-------------------+
+               |                     |
+               v                     v
++---------------------------+ +---------------------------+
+| SINCRONIZADOR (.NET)      | | MACRO (Tekla)             |
+|                           | |                           |
+| - PhaseSyncLauncher.cs    | | - SyncWeldPhaseFromParts  |
+| - PhaseSyncForm.cs        | |                           |
+| - PhaseSynchronizer.cs    | | Sincroniza:               |
+| - SyncReport.cs           | | +-- Welds                 |
+|                           | |                           |
+| Sincroniza:               | | Ubicacion:                |
+| +-- Parts                 | | +-- Macros de Tekla       |
+| +-- Bolts                 | |                           |
++--------------+------------+ +-------------+-------------+
+               |                            |
+               +------------+---------------+
+                            v
+                 +----------------------+
+                 |  TEKLA MODEL API     |
+                 |                      |
+                 | - Model              |
+                 | - Assembly           |
+                 | - Part               |
+                 | - BoltGroup          |
+                 | - BaseWeld           |
+                 +----------------------+
 ```
 
 **Nota Importante**: Ambos componentes son **independientes** pero **complementarios**:
 - El sincronizador maneja Parts y Bolts
 - La macro maneja Welds
 - Ambos pueden ejecutarse por separado
-- Juntos proporcionan sincronización completa
+- Juntos proporcionan sincronizacion completa
 
 ---
 
-## ?? Documentación Adicional
+## Documentacion Adicional
 
-El proyecto incluye más de 40 documentos técnicos en la carpeta `CORRECTOR DE ATRIBUTOS/CORRECTOR DE ATRIBUTOS/`:
+El proyecto incluye mas de 40 documentos tecnicos en la carpeta `CORRECTOR DE ATRIBUTOS/CORRECTOR DE ATRIBUTOS/`:
 
-### Guías de Usuario:
+### Guias de Usuario:
 
-| Documento | Descripción |
+| Documento | Descripcion |
 |-----------|-------------|
 | `RESUMEN_FINAL_COMPLETO.md` | Resumen ejecutivo completo del sistema |
-| `README_AUTOMATIZACION_COMPLETA.md` | Guía completa de automatización |
-| `GUIA_EJECUTAR.md` | Cómo usar el sincronizador |
-| `MACRO_INDEPENDIENTE_WELDS.md` | Cómo usar la macro de soldaduras |
-| `SISTEMA_LISTO_USAR.md` | Checklist de verificación |
+| `README_AUTOMATIZACION_COMPLETA.md` | Guia completa de automatizacion |
+| `GUIA_EJECUTAR.md` | Como usar el sincronizador |
+| `MACRO_INDEPENDIENTE_WELDS.md` | Como usar la macro de soldaduras |
+| `SISTEMA_LISTO_USAR.md` | Checklist de verificacion |
 
-### Documentación Técnica:
+### Documentacion Tecnica:
 
-| Documento | Descripción |
+| Documento | Descripcion |
 |-----------|-------------|
 | `FORMATO_MACROS_UL.md` | Formatos de archivos de Tekla |
 | `COMO_IMPORTAR_MACROS_TEKLA.md` | Sistema de macros de Tekla |
-| `COMPILACION_AUTOMATICA_MACROS.md` | Cómo Tekla compila macros |
+| `COMPILACION_AUTOMATICA_MACROS.md` | Como Tekla compila macros |
 | `ACLARACION_CRITICA_MACROS_COMPONENTES.md` | Diferencias entre componentes |
 | `DOS_APLICACIONES_SEPARADAS.md` | Arquitectura del sistema |
 
-### Solución de Problemas:
+### Solucion de Problemas:
 
-| Documento | Descripción |
+| Documento | Descripcion |
 |-----------|-------------|
-| `SOLUCION_PHASE_FALTANTE.md` | Si Phase no está asignada |
+| `SOLUCION_PHASE_FALTANTE.md` | Si Phase no esta asignada |
 | `SOLUCION_PARTS_NO_CAMBIAN.md` | Si Parts no se actualizan |
 | `SOLUCION_SOLDADURAS_HEREDAN_PHASE.md` | Problemas con soldaduras |
-| `CHECKLIST_VERIFICACION.md` | Lista de verificación completa |
+| `CHECKLIST_VERIFICACION.md` | Lista de verificacion completa |
 | `PRUEBA_EN_VIVO.md` | Checklist de prueba |
 
 ---
 
-## ?? Solución de Problemas
+## Solucion de Problemas
 
-### Problema 1: "No hay conexión con Tekla Structures"
+### Problema 1: "No hay conexion con Tekla Structures"
 
-**Causa**: Tekla no está abierto o el modelo no está cargado.
+**Causa**: Tekla no esta abierto o el modelo no esta cargado.
 
-**Solución**:
+**Solucion**:
 1. Abre Tekla Structures
 2. Abre o crea un modelo
-3. Ejecuta nuevamente la aplicación
+3. Ejecuta nuevamente la aplicacion
 
 ---
 
@@ -736,11 +757,11 @@ El proyecto incluye más de 40 documentos técnicos en la carpeta `CORRECTOR DE AT
 
 **Causa**: La Main Part del Assembly no tiene un valor de Phase.
 
-**Solución**:
+**Solucion**:
 1. Selecciona la Main Part en Tekla
 2. Abre las propiedades (doble clic)
 3. Busca el campo `Phase` o `PHASE_NUMBER`
-4. Asigna un valor numérico (ej: 1, 2, 3)
+4. Asigna un valor numerico (ej: 1, 2, 3)
 5. Guarda los cambios
 6. Ejecuta nuevamente el sincronizador
 
@@ -750,7 +771,7 @@ El proyecto incluye más de 40 documentos técnicos en la carpeta `CORRECTOR DE AT
 
 **Causa**: Tekla no ha detectado la macro nueva.
 
-**Solución**:
+**Solucion**:
 1. Cierra completamente Tekla Structures
 2. Verifica que la macro existe en:
    ```
@@ -758,7 +779,7 @@ El proyecto incluye más de 40 documentos técnicos en la carpeta `CORRECTOR DE AT
    ```
 3. Abre Tekla nuevamente
 4. Ve a `Tools > Macros...`
-5. La macro debería aparecer ahora
+5. La macro deberia aparecer ahora
 
 ---
 
@@ -766,25 +787,25 @@ El proyecto incluye más de 40 documentos técnicos en la carpeta `CORRECTOR DE AT
 
 **Causa**: Algunas Parts no pudieron modificarse (puede ser por permisos o estado).
 
-**Solución**:
-1. Verifica que las Parts no estén bloqueadas en Tekla
-2. Asegúrate de que no haya filtros activos
-3. Revisa el reporte completo para ver mensajes específicos
+**Solucion**:
+1. Verifica que las Parts no esten bloqueadas en Tekla
+2. Asegurate de que no haya filtros activos
+3. Revisa el reporte completo para ver mensajes especificos
 4. Intenta ejecutar el sincronizador nuevamente
 
 ---
 
-### Problema 5: Errores de Compilación
+### Problema 5: Errores de Compilacion
 
-**Causa**: Dependencias faltantes o configuración incorrecta.
+**Causa**: Dependencias faltantes o configuracion incorrecta.
 
-**Solución**:
+**Solucion**:
 ```bash
 # 1. Restaurar paquetes NuGet
 cd "CORRECTOR DE ATRIBUTOS"
 dotnet restore
 
-# 2. Limpiar solución
+# 2. Limpiar solucion
 dotnet clean
 
 # 3. Recompilar
@@ -797,76 +818,76 @@ dotnet build --configuration Release
 
 **Causa**: Variable de entorno `XSDATADIR` no configurada.
 
-**Solución**:
+**Solucion**:
 1. Abre "Variables de entorno" en Windows
 2. Verifica que existe `XSDATADIR`
-3. Debería apuntar a algo como:
+3. Deberia apuntar a algo como:
    ```
    C:\ProgramData\Trimble\Tekla Structures\2021.0\Environments\common\system\
    ```
-4. Si no existe, créala con la ruta correcta de tu instalación de Tekla
+4. Si no existe, creala con la ruta correcta de tu instalacion de Tekla
 
 ---
 
-## ?? Contribución
+## Contribucion
 
 ### Estructura de Commits
 
 Usa commits descriptivos siguiendo este formato:
 
 ```
-<tipo>: <descripción breve>
+<tipo>: <descripcion breve>
 
-<descripción detallada (opcional)>
+<descripcion detallada (opcional)>
 ```
 
 **Tipos**:
-- `feat`: Nueva característica
-- `fix`: Corrección de bug
-- `docs`: Cambios en documentación
-- `refactor`: Refactorización de código
-- `test`: Añadir o modificar tests
+- `feat`: Nueva caracteristica
+- `fix`: Correccion de bug
+- `docs`: Cambios en documentacion
+- `refactor`: Refactorizacion de codigo
+- `test`: Anadir o modificar tests
 - `chore`: Tareas de mantenimiento
 
 **Ejemplo**:
 ```
-feat: Añadir soporte para Tekla 2022
+feat: Anadir soporte para Tekla 2022
 
-- Actualizar referencias NuGet a versión 2022.0.0
-- Ajustar métodos de lectura/escritura de Phase
-- Actualizar documentación
+- Actualizar referencias NuGet a version 2022.0.0
+- Ajustar metodos de lectura/escritura de Phase
+- Actualizar documentacion
 ```
 
 ---
 
-### Guía de Estilo de Código
+### Guia de Estilo de Codigo
 
 Este proyecto sigue las instrucciones definidas en `instructions.md`:
 
-#### Comentarios en Español
+#### Comentarios en Espanol
 ```csharp
-// ? CORRECTO
+// [OK] CORRECTO
 // Obtiene el Assembly padre de una Part
 Assembly assembly = part.GetAssembly();
 
-// ? INCORRECTO
+// [X] INCORRECTO
 // Get parent assembly
 Assembly assembly = part.GetAssembly();
 ```
 
 #### Comentarios Detallados
 ```csharp
-// ? CORRECTO
+// [OK] CORRECTO
 // Sincroniza el Phase de todas las Secondary Parts de un Assembly.
 // 
-// ¿Qué hace?
+// Que hace?
 // - Obtiene todas las piezas secundarias del Assembly
 // - Lee el Phase objetivo de la Main Part
 // - Aplica ese Phase a cada pieza secundaria
 // - Registra el resultado en el reporte
 //
-// ¿Por qué es necesario?
-// Las Secondary Parts no heredan automáticamente el Phase de la Main Part,
+// Por que es necesario?
+// Las Secondary Parts no heredan automaticamente el Phase de la Main Part,
 // por lo que debemos sincronizarlas manualmente para mantener coherencia.
 private void SyncSecondaryParts(Assembly assembly, int targetPhase)
 {
@@ -885,7 +906,7 @@ private void SyncSecondaryParts(Assembly assembly, int targetPhase)
     }
 }
 
-// ? INCORRECTO
+// [X] INCORRECTO
 // Sync parts
 private void SyncSecondaryParts(Assembly assembly, int targetPhase)
 {
@@ -899,33 +920,33 @@ private void SyncSecondaryParts(Assembly assembly, int targetPhase)
 }
 ```
 
-#### Documentación de Decisiones
+#### Documentacion de Decisiones
 ```csharp
-// ? CORRECTO
-// DECISIÓN DE DISEÑO: Usar múltiples métodos de lectura
+// [OK] CORRECTO
+// DECISION DE DISENO: Usar multiples metodos de lectura
 //
-// ¿Por qué?
+// Por que?
 // Diferentes versiones de Tekla usan diferentes propiedades para Phase:
 // - Tekla 2019: "PHASE_NUMBER" (user property)
 // - Tekla 2020: "PHASE" (report property)
 // - Tekla 2021+: GetPhase() method
 //
-// Para garantizar compatibilidad, intentamos todos los métodos en secuencia
+// Para garantizar compatibilidad, intentamos todos los metodos en secuencia
 // hasta encontrar uno que funcione.
 private int ReadPhaseFromObject(ModelObject obj)
 {
     int phase = 0;
     
-    // Método 1: ReportProperty
+    // Metodo 1: ReportProperty
     if (obj.GetReportProperty("PHASE", ref phase) && phase > 0)
         return phase;
     
-    // Método 2: UserProperty
+    // Metodo 2: UserProperty
     if (obj.GetUserProperty("PHASE_NUMBER", ref phase) && phase > 0)
         return phase;
     
-    // Método 3: GetPhase()
-    // ... resto del código
+    // Metodo 3: GetPhase()
+    // ... resto del codigo
 }
 ```
 
@@ -947,15 +968,15 @@ git checkout -b feature/nueva-funcionalidad
 ```
 
 #### 3. Desarrollar
-- Escribe código siguiendo la guía de estilo
-- Añade comentarios detallados en español
-- Documenta decisiones de diseño
+- Escribe codigo siguiendo la guia de estilo
+- Anade comentarios detallados en espanol
+- Documenta decisiones de diseno
 - Prueba exhaustivamente en Tekla
 
 #### 4. Commit y Push
 ```bash
 git add .
-git commit -m "feat: Descripción de la funcionalidad"
+git commit -m "feat: Descripcion de la funcionalidad"
 git push origin feature/nueva-funcionalidad
 ```
 
@@ -963,65 +984,65 @@ git push origin feature/nueva-funcionalidad
 - Crea un PR desde tu rama a `main`
 - Describe los cambios realizados
 - Menciona issues relacionados
-- Espera revisión del equipo
+- Espera revision del equipo
 
 ---
 
-## ?? Licencia
+## Licencia
 
-Copyright © 1992-2024 Trimble Solutions Corporation and its licensors. All rights reserved.
+Copyright (c) 1992-2024 Trimble Solutions Corporation and its licensors. All rights reserved.
 
-Este proyecto utiliza las APIs de Tekla Structures, que están sujetas a los términos de licencia de Trimble Solutions Corporation.
+Este proyecto utiliza las APIs de Tekla Structures, que estan sujetas a los terminos de licencia de Trimble Solutions Corporation.
 
 ---
 
-## ?? Autores
+## Autores
 
 **Grupo Adipsa**  
 - Repository: [GrupoAdipsa/008-CORRECTOR-DE-ATRIBUTOS-TEKLA](https://github.com/GrupoAdipsa/008-CORRECTOR-DE-ATRIBUTOS-TEKLA)
 
 ---
 
-## ?? Soporte
+## Soporte
 
-¿Necesitas ayuda? Consulta estos recursos:
+Necesitas ayuda? Consulta estos recursos:
 
-1. **Documentación**: Revisa los 40+ documentos en `CORRECTOR DE ATRIBUTOS/CORRECTOR DE ATRIBUTOS/`
+1. **Documentacion**: Revisa los 40+ documentos en `CORRECTOR DE ATRIBUTOS/CORRECTOR DE ATRIBUTOS/`
 2. **Issues**: Abre un issue en GitHub para reportar bugs o solicitar features
 3. **Tekla API**: [Tekla Structures API Documentation](https://developer.tekla.com/)
 
 ---
 
-## ??? Roadmap
+## Roadmap
 
-### Versión 2.1 (Futuro)
+### Version 2.1 (Futuro)
 - [ ] Soporte para Tekla 2022/2023
-- [ ] Interfaz gráfica mejorada
+- [ ] Interfaz grafica mejorada
 - [ ] Exportar reportes a Excel
-- [ ] Sincronización de atributos adicionales (Class, Material, etc.)
+- [ ] Sincronizacion de atributos adicionales (Class, Material, etc.)
 - [ ] Modo batch para procesamiento masivo
 
-### Versión 2.2 (Futuro)
-- [ ] Integración con bases de datos
-- [ ] API REST para automatización
+### Version 2.2 (Futuro)
+- [ ] Integracion con bases de datos
+- [ ] API REST para automatizacion
 - [ ] Plugin de Tekla integrado
-- [ ] Multi-idioma (inglés, español, etc.)
+- [ ] Multi-idioma (ingles, espanol, etc.)
 
 ---
 
-## ? Estado del Proyecto
+## Estado del Proyecto
 
-| Componente | Estado | Versión |
+| Componente | Estado | Version |
 |------------|--------|---------|
-| Sincronizador de Assemblies | ? Completo | 2.0 |
-| Macro de Soldaduras | ? Completo | 2.0 |
-| Documentación | ? Completa | 2.0 |
-| Tests | ?? Manual | - |
-| CI/CD | ? Pendiente | - |
+| Sincronizador de Assemblies | Completo | 2.0 |
+| Macro de Soldaduras | Completo | 2.0 |
+| Documentacion | Completa | 2.0 |
+| Tests | Manual | - |
+| CI/CD | Pendiente | - |
 
 ---
 
-## ?? Agradecimientos
+## Agradecimientos
 
 Agradecimientos especiales a:
 - **Trimble Solutions Corporation** por proporcionar las APIs de Tekla Structures
@@ -1032,14 +1053,14 @@ Agradecimientos especiales a:
 
 <div align="center">
 
-**?? ¡Listo para sincronizar tus Assemblies de Tekla! ??**
+**Listo para sincronizar tus Assemblies de Tekla!**
 
-? Si este proyecto te ha sido útil, por favor dale una estrella en GitHub ?
+Si este proyecto te ha sido util, por favor dale una estrella en GitHub
 
 </div>
 
 ---
 
-**Última actualización**: 2024  
-**Versión del README**: 1.0  
-**Estado**: ? Producción
+**Ultima actualizacion**: 2024  
+**Version del README**: 1.0  
+**Estado**: Produccion
