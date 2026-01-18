@@ -1,0 +1,68 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Kevin Flores\\Documents\\008-CORRECTOR-DE-ATRIBUTOS-TEKLA\\SINCRONIZADOR_ATRIBUTOS\\SINCRONIZADOR_ATRIBUTOS.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Kevin Flores\\Documents\\008-CORRECTOR-DE-ATRIBUTOS-TEKLA\\SINCRONIZADOR_ATRIBUTOS\\SINCRONIZADOR_ATRIBUTOS.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Kevin Flores\\Documents\\008-CORRECTOR-DE-ATRIBUTOS-TEKLA\\SINCRONIZADOR_ATRIBUTOS\\SINCRONIZADOR_ATRIBUTOS.csproj",
+        "projectName": "SINCRONIZADOR_ATRIBUTOS",
+        "projectPath": "C:\\Users\\Kevin Flores\\Documents\\008-CORRECTOR-DE-ATRIBUTOS-TEKLA\\SINCRONIZADOR_ATRIBUTOS\\SINCRONIZADOR_ATRIBUTOS.csproj",
+        "packagesPath": "C:\\Users\\Kevin Flores\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Kevin Flores\\Documents\\008-CORRECTOR-DE-ATRIBUTOS-TEKLA\\SINCRONIZADOR_ATRIBUTOS\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Kevin Flores\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net48"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net48": {
+            "targetAlias": "net48",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.100"
+      },
+      "frameworks": {
+        "net48": {
+          "targetAlias": "net48",
+          "dependencies": {
+            "Tekla.Structures": {
+              "target": "Package",
+              "version": "[2021.0.0, )"
+            },
+            "Tekla.Structures.Model": {
+              "target": "Package",
+              "version": "[2021.0.0, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

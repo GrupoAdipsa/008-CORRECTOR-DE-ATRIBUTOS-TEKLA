@@ -1,0 +1,223 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.8": {
+      "Tekla.Structures/2021.0.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Runtime.Remoting"
+        ],
+        "compile": {
+          "lib/net40/Tekla.Structures.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net40/Tekla.Structures.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Tekla.Structures.Datatype/2021.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Tekla.Structures.Datatype.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net40/Tekla.Structures.Datatype.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Tekla.Structures.Model/2021.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Tekla.Structures": "2021.0.0",
+          "Tekla.Structures.Datatype": "2021.0.0"
+        },
+        "frameworkAssemblies": [
+          "System.Runtime.Remoting"
+        ],
+        "compile": {
+          "lib/net40/Tekla.Structures.Model.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net40/Tekla.Structures.Model.dll": {
+            "related": ".xml"
+          }
+        }
+      }
+    },
+    ".NETFramework,Version=v4.8/win-x86": {
+      "Tekla.Structures/2021.0.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Runtime.Remoting"
+        ],
+        "compile": {
+          "lib/net40/Tekla.Structures.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net40/Tekla.Structures.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Tekla.Structures.Datatype/2021.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Tekla.Structures.Datatype.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net40/Tekla.Structures.Datatype.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Tekla.Structures.Model/2021.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Tekla.Structures": "2021.0.0",
+          "Tekla.Structures.Datatype": "2021.0.0"
+        },
+        "frameworkAssemblies": [
+          "System.Runtime.Remoting"
+        ],
+        "compile": {
+          "lib/net40/Tekla.Structures.Model.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net40/Tekla.Structures.Model.dll": {
+            "related": ".xml"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Tekla.Structures/2021.0.0": {
+      "sha512": "8BX+Sr9J8vw+QrnGCLHx0dumE/R/hXGAfGBzldGaMSIAL0n4db2hXRigsU88CT1JKxBAM6RTwLjwWL0kMUZdBA==",
+      "type": "package",
+      "path": "tekla.structures/2021.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "eula.txt",
+        "lib/net40/Tekla.Structures.dll",
+        "lib/net40/Tekla.Structures.xml",
+        "logo.png",
+        "tekla.structures.2021.0.0.nupkg.sha512",
+        "tekla.structures.nuspec"
+      ]
+    },
+    "Tekla.Structures.Datatype/2021.0.0": {
+      "sha512": "KwShfV86Kzs0kRQLT6PwtY3CkChXj/zAWXZ5XG4AvoiO3ufaY+O78Jr4yla0Fd5wGvelxCOXhii5K8fCTvRMlw==",
+      "type": "package",
+      "path": "tekla.structures.datatype/2021.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "eula.txt",
+        "lib/net40/Tekla.Structures.Datatype.dll",
+        "lib/net40/Tekla.Structures.Datatype.xml",
+        "logo.png",
+        "tekla.structures.datatype.2021.0.0.nupkg.sha512",
+        "tekla.structures.datatype.nuspec"
+      ]
+    },
+    "Tekla.Structures.Model/2021.0.0": {
+      "sha512": "r4g3nLEEKMQpvE0tFk+McTPH9KwU8Q+vnThUQ/4LWRfUmvj7qblm8kYRChYr49TS5AASxTu/34aXfNsVcIJEzw==",
+      "type": "package",
+      "path": "tekla.structures.model/2021.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "eula.txt",
+        "lib/net40/Tekla.Structures.Model.dll",
+        "lib/net40/Tekla.Structures.Model.xml",
+        "logo.png",
+        "tekla.structures.model.2021.0.0.nupkg.sha512",
+        "tekla.structures.model.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.8": [
+      "Tekla.Structures >= 2021.0.0",
+      "Tekla.Structures.Model >= 2021.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Kevin Flores\\Documents\\008-CORRECTOR-DE-ATRIBUTOS-TEKLA\\SINCRONIZADOR_ATRIBUTOS\\SINCRONIZADOR_ATRIBUTOS.csproj",
+      "projectName": "SINCRONIZADOR_ATRIBUTOS",
+      "projectPath": "C:\\Users\\Kevin Flores\\Documents\\008-CORRECTOR-DE-ATRIBUTOS-TEKLA\\SINCRONIZADOR_ATRIBUTOS\\SINCRONIZADOR_ATRIBUTOS.csproj",
+      "packagesPath": "C:\\Users\\Kevin Flores\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Kevin Flores\\Documents\\008-CORRECTOR-DE-ATRIBUTOS-TEKLA\\SINCRONIZADOR_ATRIBUTOS\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Kevin Flores\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net48"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net48": {
+          "targetAlias": "net48",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "10.0.100"
+    },
+    "frameworks": {
+      "net48": {
+        "targetAlias": "net48",
+        "dependencies": {
+          "Tekla.Structures": {
+            "target": "Package",
+            "version": "[2021.0.0, )"
+          },
+          "Tekla.Structures.Model": {
+            "target": "Package",
+            "version": "[2021.0.0, )"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101\\RuntimeIdentifierGraph.json"
+      }
+    },
+    "runtimes": {
+      "win-x86": {
+        "#import": []
+      }
+    }
+  }
+}

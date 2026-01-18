@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "w6rkWr+RU4s=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Kevin Flores\\Documents\\008-CORRECTOR-DE-ATRIBUTOS-TEKLA\\SINCRONIZADOR_ATRIBUTOS\\SINCRONIZADOR_ATRIBUTOS.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\tekla.structures\\2021.0.0\\tekla.structures.2021.0.0.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\tekla.structures.datatype\\2021.0.0\\tekla.structures.datatype.2021.0.0.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\tekla.structures.model\\2021.0.0\\tekla.structures.model.2021.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

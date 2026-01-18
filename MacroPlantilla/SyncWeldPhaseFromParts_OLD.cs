@@ -262,6 +262,29 @@ namespace UserMacros
                     // Commit de cambios
                     model.CommitChanges();
                     System.Threading.Thread.Sleep(500);
+                    
+                    // Refrescar la vista para actualizar la representacion visual
+                    if (weldsChanged > 0)
+                    {
+                        try
+                        {
+                            // Metodo 1: Forzar refresco usando comando de Tekla
+                            Tekla.Structures.Model.Operations.Operation.DisplayPrompt("Actualizando representacion visual...");
+                            System.Threading.Thread.Sleep(200);
+                            Tekla.Structures.Model.Operations.Operation.DisplayPrompt("");
+                            
+                            // Metodo 2: Refrescar vista usando AKIT
+                            try
+                            {
+                                akit.CommandStart("View.Refresh", "", "main_frame");
+                            }
+                            catch { }
+                        }
+                        catch (Exception refreshEx)
+                        {
+                            log.AppendLine(string.Format("WARN: No se pudo refrescar vista automaticamente: {0}", refreshEx.Message));
+                        }
+                    }
                 }
 
                 // PASO 3: Reporte final

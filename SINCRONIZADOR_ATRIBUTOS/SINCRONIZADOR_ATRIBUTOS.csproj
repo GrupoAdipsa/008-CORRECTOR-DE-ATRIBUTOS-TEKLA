@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <RootNamespace>SincronizadorAtributos</RootNamespace>
+    <AssemblyName>SINCRONIZADOR_ATRIBUTOS</AssemblyName>
+    <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Tekla.Structures" Version="2021.0.0" />
+    <PackageReference Include="Tekla.Structures.Model" Version="2021.0.0" />
+  </ItemGroup>
+
+</Project>
