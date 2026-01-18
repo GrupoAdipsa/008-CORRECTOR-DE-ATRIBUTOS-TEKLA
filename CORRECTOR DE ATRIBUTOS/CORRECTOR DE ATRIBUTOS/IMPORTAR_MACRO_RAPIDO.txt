@@ -1,0 +1,39 @@
+# ? GUÍA RÁPIDA: USAR MACROS EN TEKLA
+
+## ?? ACLARACIÓN
+Las macros NO se importan - se detectan automáticamente después de reiniciar Tekla.
+
+## ? SOLUCIÓN RÁPIDA
+
+### Paso 1: Generar Macro
+```
+Ejecutar sincronizador ? Aceptar generar macro
+```
+
+### Paso 2: Reiniciar Tekla
+```
+Cerrar Tekla Structures
+Volver a abrir Tekla
+```
+
+### Paso 3: Verificar
+```
+Tools > Macros...
+La macro aparece automáticamente en la lista
+```
+
+### Paso 4: Usar
+```
+Seleccionar soldaduras
+Tools > Macros... > Seleccionar macro > Run
+```
+
+## ?? NOTAS
+- ? NO necesitas "Import" - eso es solo para componentes (.uel)
+- ? Las macros (.cs) se detectan automáticamente del directorio
+- ? Solo necesitas REINICIAR TEKLA después de generar la macro
+- ? La macro estará disponible siempre después del primer reinicio
+
+---
+
+Para más detalles, ver: `COMO_IMPORTAR_MACROS_TEKLA.md`

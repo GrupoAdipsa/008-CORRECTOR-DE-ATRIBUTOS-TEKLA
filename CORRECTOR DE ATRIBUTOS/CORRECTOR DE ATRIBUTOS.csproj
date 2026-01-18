@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+	<PropertyGroup>
+		<Copyright>Copyright © 1992-$([System.DateTime]::Now.ToString("yyyy")) Trimble Solutions Corporation and its licensors. All rights reserved.</Copyright>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<TargetFramework>net48</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<UseWindowsForms>true</UseWindowsForms>
+		<UseWPF>true</UseWPF>
+		<OutputPath>Installer/BuildDrop</OutputPath>
+		<RootNamespace>CORRECTOR_DE_ATRIBUTOS</RootNamespace>
+		<AssemblyName>CORRECTOR_DE_ATRIBUTOS</AssemblyName>
+		<OutputType>WinExe</OutputType>
+		<StartupObject>CORRECTOR_DE_ATRIBUTOS.PhaseSyncLauncher</StartupObject>
+		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+	</PropertyGroup>
+	<ItemGroup>
+	  <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+	  <PackageReference Include="Tekla.Structures" Version="2021.0.0" />
+	  <PackageReference Include="Tekla.Structures.Datatype" Version="2021.0.0" />
+	  <PackageReference Include="Tekla.Structures.Dialog" Version="2021.0.0" />
+	  <PackageReference Include="Tekla.Structures.Model" Version="2021.0.0" />
+	  <PackageReference Include="Tekla.Structures.Plugins" Version="2021.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <!-- Excluir COMPLETAMENTE la carpeta MacroPlantilla -->
+	  <!-- Las macros son una aplicación SEPARADA que se ejecuta en Tekla, NO en este proyecto -->
+	  <Compile Remove="MacroPlantilla\**\*.cs" />
+	  <Compile Remove="MacroPlantilla\*.cs" />
+	  <EmbeddedResource Remove="MacroPlantilla\**" />
+	  <None Remove="MacroPlantilla\**" />
+	  <Content Remove="MacroPlantilla\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="Tekla.UI.Commands">
+		<HintPath>$(XSDATADIR)..\nt\bin\Tekla.UI.Commands.dll</HintPath>
+		<Private>False</Private>
+	  </Reference>
+	</ItemGroup>
+</Project>

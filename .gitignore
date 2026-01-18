@@ -1,0 +1,17 @@
+# Visual Studio
+.vs/
+
+# Build outputs
+TeklaCompare/bin/
+TeklaCompare/obj/
+
+# User-specific files
+*.user
+*.suo
+
+# Debug / Release
+Debug/
+Release/
+
+# Otros
+ASIGNAR_SERIE/

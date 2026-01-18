@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "dgSpecHash": "vTJc5ZK3U9w=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Kevin Flores\\Documents\\003-COMPARAR-PIEZAS-TEKLA\\CORRECTOR DE ATRIBUTOS\\CORRECTOR DE ATRIBUTOS.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\system.resources.extensions\\8.0.0\\system.resources.extensions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.3\\system.runtime.compilerservices.unsafe.4.5.3.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\tekla.structures\\2021.0.0\\tekla.structures.2021.0.0.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\tekla.structures.catalogs\\2021.0.0\\tekla.structures.catalogs.2021.0.0.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\tekla.structures.datatype\\2021.0.0\\tekla.structures.datatype.2021.0.0.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\tekla.structures.dialog\\2021.0.0\\tekla.structures.dialog.2021.0.0.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\tekla.structures.model\\2021.0.0\\tekla.structures.model.2021.0.0.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\tekla.structures.plugins\\2021.0.0\\tekla.structures.plugins.2021.0.0.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\tekla.technology.msglib\\2.1.18312\\tekla.technology.msglib.2.1.18312.nupkg.sha512",
+    "C:\\Users\\Kevin Flores\\.nuget\\packages\\tekla.technology.rkit\\2.1.4.17310\\tekla.technology.rkit.2.1.4.17310.nupkg.sha512"
+  ],
+  "logs": []
+}

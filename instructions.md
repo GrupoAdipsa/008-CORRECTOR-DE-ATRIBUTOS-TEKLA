@@ -1,0 +1,19 @@
+- siempre habla en español
+- el el reeadme siempre actualizar las dependencias y descripciones de los archivos y como se conectan entre si
+- para ilustar las dependencias usa listas con viñetas y sangrías
+- siempre agrega anotaciones al codigo para saber que hace cada linea o bloque de codigo
+- trata de ser muy detallado en las anotaciones
+- explica cada paso del codigo como si se lo explicaras a un niño de 12 años
+- asegurate de que las anotaciones sean claras y faciles de entender
+- usa un lenguaje sencillo y evita tecnicismos complejos
+- asegurate de que las anotaciones ayuden a entender el flujo del codigo y su logica
+- no omitas detalles importantes en las anotaciones
+- usa comentarios en español para las anotaciones
+- asegurate de que las anotaciones expliquen tanto el "que" como el "por que" de cada parte del codigo
+- usa comentarios para explicar las variables, funciones y estructuras de datos
+- explica las decisiones de diseño y las elecciones de implementacion en los comentarios
+- asegurate de que las anotaciones ayuden a alguien sin experiencia a entender el codigo
+- incluye ejemplos simples en los comentarios si es necesario para aclarar conceptos
+- asegurate de que las anotaciones sean coherentes en todo el codigo
+- revisa que lineas de codigo no se esten utilizando y agregales comentarios para explicar por que no se usan
+- revisa tambien en la carpeta del proyecto si hay archivos que no se esten utilizando y agrega un archivo llamado NO_USADOS.md donde expliques cuales son esos archivos y por que no se usan
