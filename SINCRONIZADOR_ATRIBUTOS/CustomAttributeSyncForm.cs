@@ -35,7 +35,7 @@ namespace SincronizadorAtributos
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.StartPosition = FormStartPosition.Manual;
-            this.TopMost = false;
+            this.TopMost = true;
 
             // Título
             lblTitle = new Label();
@@ -73,19 +73,6 @@ namespace SincronizadorAtributos
             pnlButtons.Height = 80;
             pnlButtons.Padding = new Padding(10);
 
-            // Botón: Diagnóstico (NUEVO)
-            btnDiagnostic = new Button();
-            btnDiagnostic.Text = "?? Mapear\nAssembly";
-            btnDiagnostic.Width = 120;
-            btnDiagnostic.Height = 60;
-            btnDiagnostic.Left = 10;
-            btnDiagnostic.Top = 10;
-            btnDiagnostic.BackColor = Color.FromArgb(255, 140, 0);
-            btnDiagnostic.ForeColor = Color.White;
-            btnDiagnostic.FlatStyle = FlatStyle.Flat;
-            btnDiagnostic.Font = new Font("Segoe UI", 8, FontStyle.Bold);
-            btnDiagnostic.Cursor = Cursors.Hand;
-            btnDiagnostic.Click += BtnDiagnostic_Click;
 
             // Botón: Sincronizar Seleccionados
             btnSyncSelected = new Button();
@@ -130,7 +117,7 @@ namespace SincronizadorAtributos
             btnClose.Click += BtnClose_Click;
 
             // Agregar controles al panel
-            pnlButtons.Controls.Add(btnDiagnostic);
+            // No agregar botón de diagnóstico
             pnlButtons.Controls.Add(btnSyncSelected);
             pnlButtons.Controls.Add(btnSyncAll);
             pnlButtons.Controls.Add(btnClose);
@@ -163,30 +150,30 @@ namespace SincronizadorAtributos
         /// </summary>
         private string GetAttributesInfo()
         {
-            return "???????????????????????????????????????????\n" +
+            return "------------------------------\n" +
                    "  ATRIBUTOS A SINCRONIZAR\n" +
-                   "???????????????????????????????????????????\n\n" +
+                   "------------------------------\n\n" +
                    "1. ESTATUS_PIEZA\n" +
                    "   Nombre: \"Estatus de Pieza:\"\n" +
                    "   Tipo: Option (lista de valores)\n" +
                    "   Valores posibles:\n" +
-                   "   • (vacío)\n" +
-                   "   • Programado\n" +
-                   "   • Conectado\n" +
-                   "   • Detallado\n" +
-                   "   • Revisado\n" +
-                   "   • Liberado\n\n" +
+                   "     - (vacío)\n" +
+                   "     - Programado\n" +
+                   "     - Conectado\n" +
+                   "     - Detallado\n" +
+                   "     - Revisado\n" +
+                   "     - Liberado\n\n" +
                    "2. PRIORIDAD\n" +
                    "   Nombre: \"PRIORIDAD DETALLADO:\"\n" +
                    "   Tipo: String (texto libre)\n\n" +
-                   "???????????????????????????????????????????\n" +
+                   "------------------------------\n" +
                    "  FUNCIONAMIENTO\n" +
-                   "???????????????????????????????????????????\n\n" +
+                   "------------------------------\n\n" +
                    "El sistema lee estos atributos de la Main Part\n" +
                    "de cada Assembly y los propaga a:\n\n" +
-                   "  ? Todas las Secondary Parts\n" +
-                   "  ? Todos los Bolts del Assembly\n\n" +
-                   "???????????????????????????????????????????\n";
+                   "   - Todas las Secondary Parts\n" +
+                   "   - Todos los Bolts del Assembly\n\n" +
+                   "------------------------------\n";
         }
 
         // ============================================================================
@@ -324,69 +311,19 @@ namespace SincronizadorAtributos
 
         private void ShowReport(CustomAttributeReport report)
         {
-            // Crear formulario de reporte
-            Form reportForm = new Form();
-            reportForm.Text = "Reporte de Sincronización";
-            reportForm.Width = 700;
-            reportForm.Height = 600;
-            reportForm.StartPosition = FormStartPosition.CenterParent;
-            reportForm.FormBorderStyle = FormBorderStyle.Sizable;
-            reportForm.MaximizeBox = true;
-            reportForm.MinimizeBox = false;
-
-            // TextBox para el reporte
-            TextBox txtReport = new TextBox();
-            txtReport.Multiline = true;
-            txtReport.ScrollBars = ScrollBars.Both;
-            txtReport.ReadOnly = true;
-            txtReport.Font = new Font("Consolas", 9);
-            txtReport.Dock = DockStyle.Fill;
-            txtReport.Text = report.GenerateReport();
-            txtReport.WordWrap = false;
-
-            // Panel de botones
-            Panel pnlReportButtons = new Panel();
-            pnlReportButtons.Dock = DockStyle.Bottom;
-            pnlReportButtons.Height = 50;
-
-            // Botón: Copiar
-            Button btnCopy = new Button();
-            btnCopy.Text = "Copiar al Portapapeles";
-            btnCopy.Width = 180;
-            btnCopy.Height = 30;
-            btnCopy.Left = 10;
-            btnCopy.Top = 10;
-            btnCopy.Click += delegate
+            // Solo mostrar mensaje de éxito o error
+            if (report != null)
             {
-                try
+                string msg = report.GenerateShortSummary();
+                if (msg.Contains("Errores") || msg.Contains("Advertencias"))
                 {
-                    Clipboard.SetText(txtReport.Text);
-                    MessageBox.Show("Reporte copiado al portapapeles!",
-                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(msg, "Sincronización finalizada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show($"Error al copiar: {ex.Message}",
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Sincronización completada exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-            };
-
-            // Botón: Cerrar
-            Button btnCloseReport = new Button();
-            btnCloseReport.Text = "Cerrar";
-            btnCloseReport.Width = 100;
-            btnCloseReport.Height = 30;
-            btnCloseReport.Left = 200;
-            btnCloseReport.Top = 10;
-            btnCloseReport.Click += delegate { reportForm.Close(); };
-
-            pnlReportButtons.Controls.Add(btnCopy);
-            pnlReportButtons.Controls.Add(btnCloseReport);
-
-            reportForm.Controls.Add(txtReport);
-            reportForm.Controls.Add(pnlReportButtons);
-
-            reportForm.ShowDialog(this);
+            }
         }
     }
 }
